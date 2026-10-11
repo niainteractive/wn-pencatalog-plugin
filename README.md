@@ -178,7 +178,22 @@ work. Send an iframe-style embed or a plain link instead. Bare YouTube links bec
 youtube-nocookie players, and every player is marked `loading="lazy"` so a page with several
 videos does not fetch them all at once.
 
-### Why a pen can look empty
+### Measurements are four separate numeric fields
+
+The item form holds dimensions as numbers, and the API takes them under these exact names:
+
+| Field | Meaning |
+|---|---|
+| `length_closed` | capped length, in millimetres, one decimal |
+| `length_uncapped` | uncapped length, in millimetres |
+| `length_posted` | posted length, in millimetres |
+| `weight` | grams |
+
+**There is no `length` field.** Sending `length` is not an error and does not return 422 - the write
+succeeds, the key is ignored, and the pen saves with no measurement. It reads afterwards as though
+the data was never entered. The lesson generalises: a 200/201 with `"ok": true` only tells you the
+fields the API recognised, which its `changes` block lists. Check the field name before concluding
+that a write failed, and read the record back rather than trusting the response.
 
 A pen created with only `make` and `model` shows as a near-empty row everywhere - blanks are
 missing data, not a bug. Always pull `/vocabularies` first and send `terms`, `rating` and `offers`
