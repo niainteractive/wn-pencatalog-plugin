@@ -63,3 +63,12 @@ curl -X POST -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/jso
 
 Photos land in `storage/app/media/pens` as `<slug>-<number>.<ext>` and are immediately live.
 Every write is appended to `storage/logs/pencatalog_api.log` with the caller's IP.
+
+### Why a pen can look empty
+
+A pen created with only `make` and `model` shows as a near-empty row everywhere - blanks are
+missing data, not a bug. Always pull `/vocabularies` first and send `terms`, `rating` and `offers`
+with the pen. Terms must match the vocabulary exactly; `nationality`, `material`, `shape`,
+`nib-size`, `nib-material`, `ink-system` and the single-select `nib-swappable` are the groups to
+fill. Rating is 1-10 in half points. Photos go up after the pen exists, using its slug, and about
+1200px wide (there is no server-side resizing).
