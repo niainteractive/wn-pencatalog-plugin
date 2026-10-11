@@ -1,5 +1,7 @@
-<?php if ($record->file): ?>
-    <img src="<?= $record->file->getThumb(80, 80, ['mode' => 'crop']) ?>" alt="" style="height:60px">
+<?php $url = $record->url; ?>
+<?php if ($url): ?>
+    <img src="<?= e($url) ?>" alt="" style="max-width:64px; max-height:48px; height:auto">
+    <span class="text-muted" style="font-size:11px; display:block"><?= e($record->path) ?></span>
 <?php else: ?>
-    &mdash;
-<?php endif ?>
+    <span class="text-muted">&mdash;</span>
+<?php endif; ?>

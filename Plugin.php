@@ -40,6 +40,11 @@ class Plugin extends PluginBase
         }
     }
 
+    public function register()
+    {
+        $this->registerConsoleCommand('pencatalog.pickup-photos', \Niainteractive\PenCatalog\Console\PickupPhotos::class);
+    }
+
     public function pluginDetails()
     {
         return [

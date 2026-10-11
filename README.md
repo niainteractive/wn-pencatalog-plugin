@@ -1,6 +1,4 @@
-# wn-pencatalog-plugin
-Pen catalog
-
+# Pen Catalog (Winter CMS plugin)
 
 A backend-managed catalog of fountain pens — makes, terms (vocabularies), purchase offers
 and photos — with a sortable, filterable front-end table and a detail page per pen.

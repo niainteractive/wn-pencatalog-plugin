@@ -3,12 +3,12 @@ columns:
         label: Order
         type: number
         sortable: true
-    file:
-        label: Photo
+    path:
+        label: Image
         type: partial
         path: ~/plugins/niainteractive/pencatalog/controllers/items/_photo_thumb.htm
         sortable: false
-        searchable: false
+        searchable: true
     caption:
         label: Caption
         sortable: false

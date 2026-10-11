@@ -6,8 +6,8 @@
 {% else %}
     <h1>{{ item.brand.name }} {{ item.model }}</h1>
 
-    {% if photo and photo.file %}
-        <p><img src="{{ photo.file.getPath }}" alt="{{ photo.caption }}" style="max-width:440px; height:auto"></p>
+    {% if photo and photo.url %}
+        <p><img src="{{ photo.url }}" alt="{{ photo.caption }}" style="max-width:440px; height:auto"></p>
     {% endif %}
 
     <table style="border-collapse:collapse; margin-bottom:20px">
@@ -24,7 +24,7 @@
             {% endfor %}
 
             {% if item.rating %}
-                <tr><th style="text-align:left; padding:5px 16px 5px 0">Rating</th><td>{{ item.rating }} / 5</td></tr>
+                <tr><th style="text-align:left; padding:5px 16px 5px 0">Rating</th><td>{{ item.rating + 0 }} / 10</td></tr>
             {% endif %}
             {% if item.length_closed %}
                 <tr><th style="text-align:left; padding:5px 16px 5px 0">Length (closed)</th><td>{{ item.length_closed }} mm</td></tr>
@@ -54,8 +54,8 @@
         <h3>Photos</h3>
         <p>
             {% for p in photos %}
-                {% if p.file %}
-                    <img src="{{ p.file.getPath }}" alt="{{ p.caption }}" style="max-width:210px; height:auto; margin:0 8px 8px 0">
+                {% if p.url %}
+                    <img src="{{ p.url }}" alt="{{ p.caption }}" style="max-width:210px; height:auto; margin:0 8px 8px 0">
                 {% endif %}
             {% endfor %}
         </p>

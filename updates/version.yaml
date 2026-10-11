@@ -7,3 +7,6 @@
 1.0.3:
     - Rating widened to 1-10 half points, Inspiration field, Nib Swappable vocabulary
     - update_rating_and_fields.php
+1.0.4:
+    - Photos stored as media paths; pickup command attaches dropped files by filename
+    - update_photo_path.php
