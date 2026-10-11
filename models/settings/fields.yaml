@@ -25,17 +25,17 @@ fields:
 
     api_enabled:
         label: Enable the catalogue API
-        comment: Lets an external agent read and write pens with a bearer token.
+        comment: 'Lets an external agent read and write pens with a bearer token.'
         type: switch
         default: false
         span: left
     api_allow_writes:
         label: API may create and edit records
-        comment: Turn off to make the token read-only.
+        comment: 'Turn off to make the token read-only.'
         type: switch
         default: false
         span: right
     api_token:
         label: API token
-        comment: Send as "Authorization: Bearer <token>". Clear it to revoke access.
+        comment: 'Send this in the Authorization header as a bearer token. Clear the field to revoke access.'
         span: full
