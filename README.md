@@ -165,6 +165,12 @@ curl -X POST -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/jso
 `GET /pens/{slug}` returns the stored text plus `video_count`, so a caller can check the field
 survived without loading the page.
 
+**Use the slug the API returns, do not rebuild it.** The slug is generated from make + model, and a
+model containing a parenthetical or extra words produces a longer slug than you might expect -
+`"model": "V60 (Triangular)"` yields `majohn-v60-triangular`, not `majohn-v60`. Every write response
+includes the real `slug`; posting a photo to a slug you reconstructed yourself fails with a 404 and
+looks like the photo endpoint is broken.
+
 Only player markup survives this field: scripts, `on*` handlers, and `javascript:`/`data:` URLs are
 stripped, because it is the one field the public detail page prints unescaped. The consequence is
 that embeds which build their player with JavaScript - X/Twitter, Instagram, Facebook - will not
