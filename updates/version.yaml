@@ -13,3 +13,6 @@
 1.0.5:
     - "Videos box: embed code for one or more video reviews, shown at the bottom of the detail page"
     - update_videos_field.php
+1.0.6:
+    - "Backend forms fixed: Winter 1.3 renders the form tag and the save toolbar in the form behavior's view, which the plugin's one-line create/update overrides were replacing, leaving every form with no submit button"
+    - "Standalone offer form gains a Pen picker, so an offer created outside a pen page can still be attached to one"

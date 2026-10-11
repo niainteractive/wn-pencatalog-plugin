@@ -1,5 +1,37 @@
-<?= $this->formRender() ?>
+<?php Block::put('breadcrumb') ?>
+    <?= $this->makeLayoutPartial('breadcrumb') ?>
+    <?= $this->formRenderRecordNavigation() ?>
+<?php Block::endPut() ?>
 
-<div class="form-buttons" style="margin-top:15px"></div>
-<?= $this->relationRender('photos') ?>
-<?= $this->relationRender('offers') ?>
+<?php if (!$this->fatalError): ?>
+    <?= Form::open([
+        'id' => $this->formGetId(),
+        'class' => 'layout',
+        'data-change-monitor' => 'true',
+        'data-window-close-confirm' => 'true',
+    ]) ?>
+        <div class="layout-row">
+            <?= $this->formRender() ?>
+        </div>
+
+        <div class="form-buttons p-t">
+            <?= $this->formMakePartial('toolbar') ?>
+        </div>
+    <?= Form::close() ?>
+
+    <?php /*
+     * Photos and offers are managed here rather than as fields on the form:
+     * Winter 1.3's relation field partials don't exist, so a relation field in
+     * fields.yaml renders nothing. These widgets carry their own AJAX forms, so
+     * they sit outside the form above on purpose.
+     */ ?>
+    <?= $this->relationRender('photos') ?>
+    <?= $this->relationRender('offers') ?>
+<?php else: ?>
+    <p class="flash-message static error"><?= e($this->fatalError) ?></p>
+    <p>
+        <a href="<?= Backend::url('niainteractive/pencatalog/items') ?>" class="btn btn-default">
+            <?= e(trans('backend::lang.form.return_to_list')) ?>
+        </a>
+    </p>
+<?php endif ?>
