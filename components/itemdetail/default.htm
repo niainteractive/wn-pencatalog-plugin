@@ -8,6 +8,12 @@
 
     {% if photo and photo.url %}
         <p><img src="{{ photo.url }}" alt="{{ photo.caption }}" style="max-width:440px; height:auto"></p>
+        {# A freely-licensed photo has to carry its credit where a reader can see it, not just in
+           the alt text - CC BY and CC BY-SA both require attribution. Placeholders are skipped:
+           their caption says they are placeholders, which is not something to print on the page. #}
+        {% if photo.caption and not (photo.caption starts with 'Placeholder') %}
+            <p style="font-size:13px; color:#6b7280; margin:-6px 0 14px 0">{{ photo.caption }}</p>
+        {% endif %}
     {% endif %}
 
     <table style="border-collapse:collapse; margin-bottom:20px">
