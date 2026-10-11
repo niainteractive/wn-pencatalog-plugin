@@ -76,3 +76,16 @@ tabs:
             size: small
             span: full
             tab: Description & Rating
+
+        videos:
+            label: Videos
+            type: textarea
+            size: large
+            span: full
+            tab: Videos
+            comment: >
+                Paste embed code here - on YouTube or Vimeo use Share, then Embed. One video per
+                block and as many as you like. They appear at the bottom of the pen's page in the
+                order given. A bare YouTube, Vimeo, Dailymotion or Bilibili link works too and is
+                turned into a player. Only player markup is kept, so embeds built by JavaScript
+                (X, Instagram, Facebook) will not play.

@@ -2,12 +2,16 @@
 /**
  * Lint every yaml file in the plugin.
  *
- * Two checks, because one is not enough:
+ * Three checks, because one is not enough:
  *  1. Parse each file with Winter's parser.
- *  2. Flag mapping values that contain ": " while unquoted. Storm's parser is lenient about this,
- *     but the backend's Settings/Form widgets are not - an unquoted comment containing a colon
- *     ("Send as \"Authorization: Bearer x\"") rendered the whole settings page as a syntax-error
- *     notice even though the parser accepted it. Check 2 is what catches that class.
+ *  2. Flag values that contain ": " while unquoted, in a mapping value OR in a sequence item.
+ *     Storm's parser is lenient about this, but the backend's Settings/Form widgets are not - an
+ *     unquoted comment containing a colon rendered the whole settings page as a syntax-error
+ *     notice even though the parser accepted it.
+ *  3. Assert updates/version.yaml has the shape Winter's updater can walk: every entry's details
+ *     must be strings. An unquoted colon in a sequence item makes YAML build a nested mapping,
+ *     and then VersionManager::extractScriptsAndComments() calls preg_match() on an array - the
+ *     migration run then dies with a type error rather than anything that names the file.
  *
  * Run from the site root:  php plugins/niainteractive/pencatalog/scripts/lint_yaml.php
  * Exit: 0 clean, 1 problems found, 2 cannot bootstrap.
@@ -53,15 +57,22 @@ foreach ($files as $path) {
         echo "PARSE  " . $rel . "\n       " . trim(preg_replace('/\s+/', ' ', $e->getMessage())) . "\n";
     }
 
-    // 2. unquoted values containing ": "
+    // 2. unquoted values containing ": ", whether a mapping value or a sequence item
     foreach (file($path) as $i => $line) {
-        if (!preg_match('/^\s*[A-Za-z0-9_.-]+:\s+(.*)$/', rtrim($line, "\r\n"), $m)) {
+        $line = rtrim($line, "\r\n");
+
+        if (preg_match('/^\s*[A-Za-z0-9_.-]+:\s+(.*)$/', $line, $m)) {
+            $value = trim($m[1]);            // key: value
+        } elseif (preg_match('/^\s*-\s+(.*)$/', $line, $m)) {
+            $value = trim($m[1]);            // - value    (a sequence item)
+        } else {
             continue;
         }
-        $value = trim($m[1]);
-        if ($value === '' || preg_match('/^[\'">|\[{]/', $value)) {
+
+        if ($value === '' || preg_match('/^[\'\">|\[{]/', $value)) {
             continue;   // quoted, block scalar or collection - fine
         }
+
         if (strpos($value, ': ') !== false) {
             $problems++;
             echo "COLON  " . $rel . ':' . ($i + 1) . "\n";
@@ -71,8 +82,33 @@ foreach ($files as $path) {
     }
 }
 
+// 3. version.yaml must stay a shape the updater can walk
+$versionFile = $root . '/updates/version.yaml';
+if (is_file($versionFile)) {
+    try {
+        $versions = $parser->parseFile($versionFile);
+        if (is_array($versions)) {
+            foreach ($versions as $version => $details) {
+                $items = is_array($details) ? $details : [$details];
+                foreach ($items as $index => $item) {
+                    if (!is_string($item)) {
+                        $problems++;
+                        echo "SHAPE  updates/version.yaml\n";
+                        echo "       version $version, item " . ($index + 1) . " is " . gettype($item)
+                            . ", not a string (an unquoted colon builds a mapping)\n";
+                        echo "       -> quote the line\n";
+                    }
+                }
+            }
+        }
+    } catch (\Throwable $e) {
+        $problems++;
+        echo "SHAPE  updates/version.yaml did not parse: " . trim($e->getMessage()) . "\n";
+    }
+}
+
 if ($problems === 0) {
-    echo "lint_yaml: OK - $checked yaml files parsed, no unquoted colons.\n";
+    echo "lint_yaml: OK - $checked yaml files parsed, no unquoted colons, version.yaml shape is sound.\n";
 } else {
     echo "lint_yaml: $problems problem(s) across $checked yaml files.\n";
 }

@@ -146,6 +146,32 @@ photos are the single biggest drag on page speed. JPG, PNG, WebP and GIF are acc
 
 Every write is appended to `storage/logs/pencatalog_api.log` with the caller's IP.
 
+### Videos
+
+A pen can carry video reviews. The `videos` field takes embed code - on YouTube or Vimeo that is
+Share, then Embed - with **one or more videos per pen**, and the detail page prints them at the
+bottom in the order given.
+
+A bare YouTube, Vimeo, Dailymotion or Bilibili link on its own line is turned into a player, so a
+caller that found a review only has to send the URL:
+
+```bash
+curl -X POST -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+  -d '{"make":"Pilot","model":"Custom 823",
+       "videos":"https://www.youtube.com/watch?v=dQw4w9WgXcQ\nhttps://vimeo.com/347119375"}' \
+  $H/pens
+```
+
+`GET /pens/{slug}` returns the stored text plus `video_count`, so a caller can check the field
+survived without loading the page.
+
+Only player markup survives this field: scripts, `on*` handlers, and `javascript:`/`data:` URLs are
+stripped, because it is the one field the public detail page prints unescaped. The consequence is
+that embeds which build their player with JavaScript - X/Twitter, Instagram, Facebook - will not
+work. Send an iframe-style embed or a plain link instead. Bare YouTube links become
+youtube-nocookie players, and every player is marked `loading="lazy"` so a page with several
+videos does not fetch them all at once.
+
 ### Why a pen can look empty
 
 A pen created with only `make` and `model` shows as a near-empty row everywhere - blanks are

@@ -10,3 +10,6 @@
 1.0.4:
     - Photos stored as media paths; pickup command attaches dropped files by filename
     - update_photo_path.php
+1.0.5:
+    - "Videos box: embed code for one or more video reviews, shown at the bottom of the detail page"
+    - update_videos_field.php

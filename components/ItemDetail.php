@@ -15,6 +15,9 @@ class ItemDetail extends ComponentBase
 
     public $photos;
 
+    /** @var array of sanitised video embed snippets */
+    public $videoEmbeds = [];
+
     public function componentDetails()
     {
         return [
@@ -81,11 +84,13 @@ class ItemDetail extends ComponentBase
 
         $this->offers = $this->item->offers;
         $this->photos = $this->item->photos;
+        $this->videoEmbeds = $this->item->videoEmbeds();
 
         $this->page['item'] = $this->item;
         $this->page['termGroups'] = $this->termGroups;
         $this->page['offers'] = $this->offers;
         $this->page['photos'] = $this->photos;
+        $this->page['videoEmbeds'] = $this->videoEmbeds;
         $this->page['photo'] = $this->photos->where('is_primary', 1)->first() ?: $this->photos->first();
     }
 

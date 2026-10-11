@@ -1,6 +1,7 @@
 <?php namespace Niainteractive\PenCatalog\Models;
 
 use Model;
+use Niainteractive\PenCatalog\Classes\VideoEmbeds;
 use Niainteractive\PenCatalog\Traits\GeneratesSlug;
 
 /**
@@ -23,7 +24,7 @@ class Item extends Model
 
     public $fillable = [
         'type_id', 'make_id', 'model', 'slug', 'rating', 'length_closed', 'length_uncapped',
-        'length_posted', 'weight', 'description', 'notes', 'inspiration', 'is_published',
+        'length_posted', 'weight', 'description', 'notes', 'inspiration', 'videos', 'is_published',
     ];
 
     public $rules = [
@@ -79,6 +80,16 @@ class Item extends Model
             'item_id',
             'term_id'
         );
+    }
+
+    /**
+     * The video embeds for this pen, sanitised and ready to print on the detail page.
+     *
+     * @return array of HTML snippets
+     */
+    public function videoEmbeds()
+    {
+        return VideoEmbeds::parse($this->videos);
     }
 
     /** @var array group slug => selected term ids, waiting to be written */

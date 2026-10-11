@@ -38,7 +38,7 @@ class Api
         return $this->json([
             'ok'         => true,
             'service'    => 'PenCatalog API',
-            'version'    => '1.1.0',
+            'version'    => '1.1.1',
             'can_write'  => (bool) Settings::get('api_allow_writes', false),
             'pens'       => Item::count(),
             'endpoints'  => [
@@ -209,7 +209,9 @@ class Api
             }
         }
 
-        foreach (['inspiration', 'description', 'notes'] as $text) {
+        // "videos" takes embed code or a bare YouTube/Vimeo/Dailymotion/Bilibili link; the
+        // plugin turns either into a sanitised player on the detail page.
+        foreach (['inspiration', 'description', 'notes', 'videos'] as $text) {
             if (array_key_exists($text, $data)) {
                 $item->$text = (string) $data[$text];
                 $changes[$text] = 'set';
@@ -1098,6 +1100,8 @@ class Api
                 'weight'          => $item->weight ? (float) $item->weight : null,
                 'description'     => $item->description,
                 'notes'           => $item->notes,
+                'videos'          => $item->videos,
+                'video_count'     => count($item->videoEmbeds()),
                 'is_published'    => (bool) $item->is_published,
             ];
         }

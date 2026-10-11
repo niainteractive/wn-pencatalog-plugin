@@ -89,6 +89,13 @@
         </div>
     {% endif %}
 
+    {% if videoEmbeds|length %}
+        <h3>Videos</h3>
+        {% for embed in videoEmbeds %}
+            <div class="pen-video" style="margin:0 0 22px 0; max-width:760px">{{ embed|raw }}</div>
+        {% endfor %}
+    {% endif %}
+
     <p style="margin-top:22px"><a href="/pens">← all pens</a></p>
 {% endif %}
 </div>
