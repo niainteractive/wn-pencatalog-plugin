@@ -99,7 +99,7 @@ class CatalogTable extends ComponentBase
         $base = rtrim((string) $this->property('baseUrl', '/pens'), '/');
         $base = $base === '' ? '/pens' : $base;
 
-        $sortable = ['model', 'brand', 'rating', 'length_closed', 'length_posted', 'weight', 'inspiration', 'updated_at'];
+        $sortable = ['model', 'brand', 'rating', 'inspiration', 'weight'];
 
         $sort = (string) get('sort');
         if (!in_array($sort, $sortable, true)) {
@@ -174,18 +174,14 @@ class CatalogTable extends ComponentBase
 
         /* Columns */
         $this->columns = [
-            ['key' => 'brand',         'label' => 'Make',       'kind' => 'brand', 'sort' => 'brand'],
-            ['key' => 'model',         'label' => 'Model',      'kind' => 'model', 'sort' => 'model'],
-            ['key' => 'inspiration',   'label' => 'Inspiration', 'kind' => 'field', 'sort' => 'inspiration'],
-            ['key' => 'nationality',   'label' => 'Nationality', 'kind' => 'terms', 'group' => 'nationality'],
-            ['key' => 'shape',         'label' => 'Shape',      'kind' => 'terms', 'group' => 'shape'],
-            ['key' => 'nib-size',      'label' => 'Nib Size',   'kind' => 'terms', 'group' => 'nib-size'],
-            ['key' => 'nib-swappable', 'label' => 'Swappable',  'kind' => 'terms', 'group' => 'nib-swappable'],
-            ['key' => 'nib-type',      'label' => 'Nib Type',   'kind' => 'terms', 'group' => 'nib-type'],
-            ['key' => 'ink-system',    'label' => 'Ink',        'kind' => 'terms', 'group' => 'ink-system'],
-            ['key' => 'rating',        'label' => 'Rating',     'kind' => 'field', 'sort' => 'rating', 'suffix' => ' / 10'],
-            ['key' => 'length_closed', 'label' => 'Length',     'kind' => 'field', 'sort' => 'length_closed', 'suffix' => ' mm'],
-            ['key' => 'weight',        'label' => 'Weight',     'kind' => 'field', 'sort' => 'weight', 'suffix' => ' g'],
+            ['key' => 'brand',       'label' => 'Make',        'kind' => 'brand', 'sort' => 'brand'],
+            ['key' => 'model',       'label' => 'Model',       'kind' => 'model', 'sort' => 'model'],
+            ['key' => 'rating',      'label' => 'Rating',      'kind' => 'field', 'sort' => 'rating', 'suffix' => ' / 10'],
+            ['key' => 'inspiration', 'label' => 'Inspiration', 'kind' => 'field', 'sort' => 'inspiration'],
+            ['key' => 'nationality', 'label' => 'Nationality', 'kind' => 'terms', 'group' => 'nationality'],
+            ['key' => 'nib-type',    'label' => 'Nib Type',    'kind' => 'terms', 'group' => 'nib-type'],
+            ['key' => 'ink-system',  'label' => 'Ink',         'kind' => 'terms', 'group' => 'ink-system'],
+            ['key' => 'weight',      'label' => 'Weight',      'kind' => 'field', 'sort' => 'weight', 'suffix' => ' g'],
         ];
 
         /* Sort links (flip direction on the active column) */
