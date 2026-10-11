@@ -23,4 +23,17 @@ Route::group([
     Route::get('pens/{slug}',  [Api::class, 'penShow']);
     Route::post('pens',        [Api::class, 'penStore']);
     Route::post('photos',      [Api::class, 'photoUpload']);
+
+    /* The vocabulary: read every list, and add to it. Writing needs the write switch on.
+     * POST makes is where a brand-level note belongs - the make row has a notes column. */
+    Route::get('makes',        [Api::class, 'makesIndex']);
+    Route::post('makes',       [Api::class, 'makeStore']);
+    Route::get('vendors',      [Api::class, 'vendorsIndex']);
+    Route::post('vendors',     [Api::class, 'vendorStore']);
+    Route::get('terms',        [Api::class, 'termsIndex']);
+    Route::post('terms',       [Api::class, 'termStore']);
+    Route::get('term-groups',  [Api::class, 'termGroupsIndex']);
+    Route::post('term-groups', [Api::class, 'termGroupStore']);
+    Route::get('item-types',   [Api::class, 'itemTypesIndex']);
+    Route::post('item-types',  [Api::class, 'itemTypeStore']);
 });
