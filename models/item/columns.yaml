@@ -9,30 +9,25 @@ columns:
         select: name
         searchable: true
         sortable: true
-    inspiration:
-        label: Inspiration
-        searchable: true
-        sortable: true
-    nib_swappable:
-        label: Nib Swappable
-        type: partial
-        path: $/niainteractive/pencatalog/controllers/items/_nib_swappable.htm
-    length_closed:
-        label: Length
-        type: number
-        sortable: true
-    weight:
-        label: Weight
-        type: number
+    is_published:
+        label: Published
+        type: switch
         sortable: true
     rating:
         label: Rating
         type: number
         sortable: true
-    is_published:
-        label: Published
-        type: switch
-    updated_at:
-        label: Updated
-        type: datetime
+    nationality:
+        label: Nationality
+        type: partial
+        path: $/niainteractive/pencatalog/controllers/items/_term_cell.htm
+        group: nationality
+    material:
+        label: Material
+        type: partial
+        path: $/niainteractive/pencatalog/controllers/items/_term_cell.htm
+        group: material
+    inspiration:
+        label: Inspiration
+        searchable: true
         sortable: true

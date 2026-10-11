@@ -1,0 +1,27 @@
+<?php
+/**
+ * Renders the terms of ONE term group for this row.
+ * Which group is read from the column's own config, so the same partial backs
+ * several columns:
+ *
+ *     nationality:
+ *         type: partial
+ *         path: $/niainteractive/pencatalog/controllers/items/_term_cell.htm
+ *         group: nationality
+ */
+$groupSlug = isset($listColumn->config['group']) ? $listColumn->config['group'] : null;
+$names = [];
+
+if ($groupSlug) {
+    foreach ($record->terms as $term) {
+        if ($term->group && $term->group->slug === $groupSlug) {
+            $names[] = $term->name;
+        }
+    }
+}
+?>
+<?php if ($names): ?>
+    <?= e(implode(', ', $names)) ?>
+<?php else: ?>
+    <span class="text-muted">&mdash;</span>
+<?php endif ?>
