@@ -1,0 +1,16 @@
+scopes:
+    make:
+        label: Make
+        type: group
+        modelClass: Niainteractive\PenCatalog\Models\Make
+        nameFrom: name
+        conditions: make_id in (:filtered)
+    rating:
+        label: Rating at least
+        type: number
+        conditions: rating >= :value
+        default: 0
+    inspiration:
+        label: Inspiration contains
+        type: text
+        conditions: inspiration like concat('%', :value, '%')

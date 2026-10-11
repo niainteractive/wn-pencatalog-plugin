@@ -1,0 +1,22 @@
+columns:
+    vendor:
+        label: Vendor
+        relation: vendor
+        select: name
+        sortable: true
+    item:
+        label: Pen
+        relation: item
+        select: model
+        sortable: true
+    price:
+        label: Price
+        type: number
+        sortable: true
+    currency:
+        label: Currency
+    availability:
+        label: Availability
+    price_date:
+        label: Checked
+        type: date

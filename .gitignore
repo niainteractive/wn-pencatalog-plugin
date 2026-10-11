@@ -1,0 +1,9 @@
+# build + editor noise
+error_log
+*.bak-*
+*.log
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+vendor/

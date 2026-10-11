@@ -1,0 +1,17 @@
+photos:
+    label: Photos
+    manage:
+        form: $/niainteractive/pencatalog/models/itemphoto/fields.yaml
+        list: $/niainteractive/pencatalog/models/itemphoto/columns.yaml
+    view:
+        list: $/niainteractive/pencatalog/models/itemphoto/columns.yaml
+        toolbarButtons: create|delete
+
+offers:
+    label: Where to buy
+    manage:
+        form: $/niainteractive/pencatalog/models/offer/fields.yaml
+        list: $/niainteractive/pencatalog/models/offer/columns.yaml
+    view:
+        list: $/niainteractive/pencatalog/models/offer/columns.yaml
+        toolbarButtons: create|delete

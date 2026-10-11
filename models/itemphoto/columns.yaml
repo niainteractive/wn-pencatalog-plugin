@@ -1,0 +1,18 @@
+columns:
+    sort_order:
+        label: Order
+        type: number
+        sortable: true
+    file:
+        label: Photo
+        type: partial
+        path: ~/plugins/niainteractive/pencatalog/controllers/items/_photo_thumb.htm
+        sortable: false
+        searchable: false
+    caption:
+        label: Caption
+        sortable: false
+    is_primary:
+        label: Primary
+        type: switch
+        sortable: false

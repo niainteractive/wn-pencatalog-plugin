@@ -1,0 +1,9 @@
+1.0.1:
+    - Create the catalogue tables
+    - create_tables.php
+1.0.2:
+    - Seed default types, groups and terms
+    - seed_vocabularies.php
+1.0.3:
+    - Rating widened to 1-10 half points, Inspiration field, Nib Swappable vocabulary
+    - update_rating_and_fields.php

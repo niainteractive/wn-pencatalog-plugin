@@ -1,0 +1,16 @@
+title: Terms
+list: $/niainteractive/pencatalog/models/term/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\Term
+recordUrl: niainteractive/pencatalog/terms/update/:id
+recordsPerPage: 25
+showSetup: true
+showSorting: true
+showCheckboxes: true
+defaultSort:
+    column: name
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search terms
+        mode: contains

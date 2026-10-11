@@ -1,0 +1,13 @@
+name: Type
+form: $/niainteractive/pencatalog/models/itemtype/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\ItemType
+defaultRedirect: niainteractive/pencatalog/itemtypes
+create:
+    title: New Type
+    redirect: niainteractive/pencatalog/itemtypes/update/:id
+    redirectClose: niainteractive/pencatalog/itemtypes
+update:
+    title: Edit Type
+    redirect: niainteractive/pencatalog/itemtypes
+preview:
+    title: View Type

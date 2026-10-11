@@ -1,0 +1,10 @@
+columns:
+    name:
+        label: Make
+        searchable: true
+        sortable: true
+    website:
+        label: Website
+    is_active:
+        label: Active
+        type: switch

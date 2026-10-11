@@ -1,0 +1,8 @@
+# PenCatalog
+# Backend navigation and permissions are registered in Plugin.php; this file
+# carries plugin-level metadata.
+
+name: Pen Catalog
+description: Catalog of fountain pens (and other products)
+author: Annie Easley
+homepage: https://niainteractive.com

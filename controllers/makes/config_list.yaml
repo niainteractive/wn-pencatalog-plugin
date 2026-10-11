@@ -1,0 +1,16 @@
+title: Makes
+list: $/niainteractive/pencatalog/models/make/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\Make
+recordUrl: niainteractive/pencatalog/makes/update/:id
+recordsPerPage: 25
+showSetup: true
+showSorting: true
+showCheckboxes: true
+defaultSort:
+    column: name
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search makes
+        mode: contains

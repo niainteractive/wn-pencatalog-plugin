@@ -1,0 +1,15 @@
+title: Pens
+list: $/niainteractive/pencatalog/models/item/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\Item
+recordUrl: niainteractive/pencatalog/items/update/:id
+recordsPerPage: 50
+showSetup: true
+showSorting: true
+defaultSort:
+    column: model
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search make or model
+        mode: contains

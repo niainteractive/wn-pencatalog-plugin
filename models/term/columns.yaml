@@ -1,0 +1,17 @@
+columns:
+    name:
+        label: Term
+        searchable: true
+        sortable: true
+    group:
+        label: Group
+        relation: group
+        select: name
+        sortable: true
+    sort_order:
+        label: Order
+        type: number
+        sortable: true
+    is_active:
+        label: Active
+        type: switch

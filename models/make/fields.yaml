@@ -1,0 +1,27 @@
+fields:
+    name:
+        label: Make
+        span: left
+        required: 1
+    website:
+        label: Website
+        span: right
+    country_term_id:
+        label: Nationality
+        type: dropdown
+        options: \Niainteractive\PenCatalog\Models\Term::getNationalityOptions
+        span: left
+        comment: Optional. Pulls from the Nationality term group.
+    logo:
+        label: Logo path or URL
+        span: right
+        comment: Upload widgets are broken in Winter 1.3 - paste a path or URL for now.
+    notes:
+        label: Notes
+        type: textarea
+        size: small
+        span: full
+    is_active:
+        label: Active
+        type: switch
+        default: true

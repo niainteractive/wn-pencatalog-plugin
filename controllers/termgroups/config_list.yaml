@@ -1,0 +1,16 @@
+title: Termgroups
+list: $/niainteractive/pencatalog/models/termgroup/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\TermGroup
+recordUrl: niainteractive/pencatalog/termgroups/update/:id
+recordsPerPage: 25
+showSetup: true
+showSorting: true
+showCheckboxes: true
+defaultSort:
+    column: sort_order
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search groups
+        mode: contains

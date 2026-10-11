@@ -1,0 +1,13 @@
+name: Offer
+form: $/niainteractive/pencatalog/models/offer/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\Offer
+defaultRedirect: niainteractive/pencatalog/offers
+create:
+    title: New Offer
+    redirect: niainteractive/pencatalog/offers/update/:id
+    redirectClose: niainteractive/pencatalog/offers
+update:
+    title: Edit Offer
+    redirect: niainteractive/pencatalog/offers
+preview:
+    title: View Offer

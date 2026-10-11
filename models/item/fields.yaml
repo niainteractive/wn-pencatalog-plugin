@@ -1,0 +1,78 @@
+tabs:
+    fields:
+        make_id:
+            label: Make
+            type: dropdown
+            options: \Niainteractive\PenCatalog\Models\Make::getSelectOptions
+            span: left
+            tab: Basics
+            required: 1
+            comment: Plain dropdown (Winter 1.3 has no working relation form field).
+        model:
+            label: Model
+            span: right
+            tab: Basics
+            required: 1
+        inspiration:
+            label: Inspiration / Clone of
+            span: left
+            tab: Basics
+            comment: The pen this one echoes, e.g. "Lamy Studio".
+        is_published:
+            label: Published
+            type: switch
+            span: right
+            default: true
+            tab: Basics
+        slug:
+            label: Slug
+            span: left
+            tab: Basics
+            comment: Leave blank to build it from the make and model.
+
+        length_closed:
+            label: Length (closed)
+            type: number
+            span: left
+            tab: Dimensions
+            comment: mm
+        length_uncapped:
+            label: Length (uncapped)
+            type: number
+            span: right
+            tab: Dimensions
+            comment: mm
+        length_posted:
+            label: Length (posted)
+            type: number
+            span: left
+            tab: Dimensions
+            comment: mm
+        weight:
+            label: Weight
+            type: number
+            span: right
+            tab: Dimensions
+            comment: grams
+
+        rating:
+            label: Rating
+            type: number
+            span: left
+            tab: Description & Rating
+            step: 0.5
+            min: 1
+            max: 10
+            comment: 1 to 10, half points allowed (7.5)
+        description:
+            label: Description
+            type: textarea
+            size: large
+            span: full
+            tab: Description & Rating
+        notes:
+            label: Notes
+            type: textarea
+            size: small
+            span: full
+            tab: Description & Rating

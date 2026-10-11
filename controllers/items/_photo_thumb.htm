@@ -1,0 +1,5 @@
+<?php if ($record->file): ?>
+    <img src="<?= $record->file->getThumb(80, 80, ['mode' => 'crop']) ?>" alt="" style="height:60px">
+<?php else: ?>
+    &mdash;
+<?php endif ?>

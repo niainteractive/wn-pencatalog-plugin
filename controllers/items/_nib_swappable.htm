@@ -1,0 +1,8 @@
+<?php
+$swappable = $record->nib_swappable;
+?>
+<?php if ($swappable): ?>
+    <span class="oc-icon-check text-success">&nbsp;</span><?= e($swappable->name) ?>
+<?php else: ?>
+    <span class="text-muted">&mdash;</span>
+<?php endif; ?>

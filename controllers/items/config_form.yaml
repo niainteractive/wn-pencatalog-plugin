@@ -1,0 +1,13 @@
+name: Pen
+form: $/niainteractive/pencatalog/models/item/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\Item
+defaultRedirect: niainteractive/pencatalog/items
+create:
+    title: New Pen
+    redirect: niainteractive/pencatalog/items/update/:id
+    redirectClose: niainteractive/pencatalog/items
+update:
+    title: Edit Pen
+    redirect: niainteractive/pencatalog/items
+preview:
+    title: View Pen

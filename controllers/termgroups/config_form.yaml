@@ -1,0 +1,13 @@
+name: Group
+form: $/niainteractive/pencatalog/models/termgroup/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\TermGroup
+defaultRedirect: niainteractive/pencatalog/termgroups
+create:
+    title: New Group
+    redirect: niainteractive/pencatalog/termgroups/update/:id
+    redirectClose: niainteractive/pencatalog/termgroups
+update:
+    title: Edit Group
+    redirect: niainteractive/pencatalog/termgroups
+preview:
+    title: View Group

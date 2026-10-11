@@ -1,0 +1,13 @@
+fields:
+    file_id:
+        label: Photo (media file ID or URL)
+        span: left
+        comment: Upload widgets are broken in Winter 1.3 - paste an ID or URL for now.
+    caption:
+        label: Caption
+        span: right
+    is_primary:
+        label: Primary photo
+        comment: Used as the pen's main image.
+        type: switch
+        span: right

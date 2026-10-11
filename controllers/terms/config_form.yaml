@@ -1,0 +1,13 @@
+name: Term
+form: $/niainteractive/pencatalog/models/term/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\Term
+defaultRedirect: niainteractive/pencatalog/terms
+create:
+    title: New Term
+    redirect: niainteractive/pencatalog/terms/update/:id
+    redirectClose: niainteractive/pencatalog/terms
+update:
+    title: Edit Term
+    redirect: niainteractive/pencatalog/terms
+preview:
+    title: View Term

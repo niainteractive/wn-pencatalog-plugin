@@ -1,0 +1,16 @@
+title: Vendors
+list: $/niainteractive/pencatalog/models/vendor/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\Vendor
+recordUrl: niainteractive/pencatalog/vendors/update/:id
+recordsPerPage: 25
+showSetup: true
+showSorting: true
+showCheckboxes: true
+defaultSort:
+    column: name
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search vendors
+        mode: contains

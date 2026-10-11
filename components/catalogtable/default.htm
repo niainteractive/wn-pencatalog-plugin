@@ -1,0 +1,10 @@
+<div class="pen-wrap" style="max-width:1100px; margin:0 auto; padding:0 30px 56px 30px">
+    <div id="catalogTable" class="pen-catalog">
+        {% if catalogRestricted %}
+            <p>This catalogue is private. Please sign in.</p>
+        {% else %}
+            {% partial '@filters' %}
+            {% partial '@table' %}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div style="overflow-x:auto">
+<table class="table pen-table" style="width:100%; border-collapse:collapse">
+    <thead>
+        <tr>
+            {% for column in columns %}
+                <th style="text-align:left; border-bottom:2px solid #ddd; padding:7px 10px; white-space:nowrap">
+                    {% if sortLinks[column.key] is defined %}
+                        <a href="{{ sortLinks[column.key] }}">{{ column.label }}</a>
+                    {% else %}
+                        {{ column.label }}
+                    {% endif %}
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+            <tr>
+                {% for column in columns %}
+                    <td style="padding:7px 10px; border-bottom:1px solid #eee">
+                        {% if column.kind == 'brand' %}
+                            {% if row.item.brand %}
+                                <a href="/pens?make={{ row.item.brand.slug }}">{{ row.item.brand.name }}</a>
+                            {% endif %}
+                        {% elseif column.kind == 'model' %}
+                            <a href="/pen/{{ row.item.slug }}">{{ row.item.model }}</a>
+                        {% elseif column.kind == 'terms' %}
+                            {% for term in row.terms[column.group] ?? [] %}
+                                <a href="/pens?term[{{ column.group }}]={{ term.slug }}">{{ term.name }}</a>{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% if row.item[column.key] is not null %}
+                                {{ row.item[column.key] }}{{ column.suffix }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr><td colspan="{{ columns|length }}" style="padding:14px">No pens yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<div style="margin-top:14px">{{ items.render|raw }}</div>

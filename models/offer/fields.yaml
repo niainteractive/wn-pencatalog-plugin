@@ -1,0 +1,41 @@
+fields:
+    vendor_id:
+        label: Vendor
+        type: dropdown
+        options: \Niainteractive\PenCatalog\Models\Vendor::getSelectOptions
+        span: left
+        comment: Plain dropdown (Winter 1.3 has no working relation form field).
+    label:
+        label: Label
+        span: right
+        comment: e.g. "with converter"
+    url:
+        label: Sales page URL
+        span: full
+    price:
+        label: Price
+        type: number
+        span: left
+    currency:
+        label: Currency
+        default: USD
+        span: right
+    price_date:
+        label: Date checked
+        comment: "YYYY-MM-DD"
+        type: text
+        span: left
+    availability:
+        label: Availability
+        type: dropdown
+        options: getAvailabilityOptions
+        span: right
+    shipping:
+        label: Shipping
+        type: number
+        span: left
+    notes:
+        label: Notes
+        type: textarea
+        size: small
+        span: full

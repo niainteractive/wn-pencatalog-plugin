@@ -1,0 +1,13 @@
+name: Make
+form: $/niainteractive/pencatalog/models/make/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\Make
+defaultRedirect: niainteractive/pencatalog/makes
+create:
+    title: New Make
+    redirect: niainteractive/pencatalog/makes/update/:id
+    redirectClose: niainteractive/pencatalog/makes
+update:
+    title: Edit Make
+    redirect: niainteractive/pencatalog/makes
+preview:
+    title: View Make

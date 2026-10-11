@@ -1,0 +1,11 @@
+columns:
+    name:
+        label: Group
+        searchable: true
+        sortable: true
+    is_multi:
+        label: Multi-value
+        type: switch
+    is_active:
+        label: Active
+        type: switch

@@ -1,0 +1,13 @@
+name: Vendor
+form: $/niainteractive/pencatalog/models/vendor/fields.yaml
+modelClass: Niainteractive\PenCatalog\Models\Vendor
+defaultRedirect: niainteractive/pencatalog/vendors
+create:
+    title: New Vendor
+    redirect: niainteractive/pencatalog/vendors/update/:id
+    redirectClose: niainteractive/pencatalog/vendors
+update:
+    title: Edit Vendor
+    redirect: niainteractive/pencatalog/vendors
+preview:
+    title: View Vendor

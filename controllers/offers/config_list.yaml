@@ -1,0 +1,16 @@
+title: Offers
+list: $/niainteractive/pencatalog/models/offer/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\Offer
+recordUrl: niainteractive/pencatalog/offers/update/:id
+recordsPerPage: 25
+showSetup: true
+showSorting: true
+showCheckboxes: true
+defaultSort:
+    column: id
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search offers
+        mode: contains

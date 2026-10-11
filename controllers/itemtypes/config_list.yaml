@@ -1,0 +1,16 @@
+title: Types
+list: $/niainteractive/pencatalog/models/itemtype/columns.yaml
+modelClass: Niainteractive\PenCatalog\Models\ItemType
+recordUrl: niainteractive/pencatalog/itemtypes/update/:id
+recordsPerPage: 25
+showSetup: true
+showSorting: true
+showCheckboxes: true
+defaultSort:
+    column: sort_order
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search types
+        mode: contains

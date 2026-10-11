@@ -1,0 +1,10 @@
+{
+    "name": "niainteractive/wn-pencatalog-plugin",
+    "type": "winter-plugin",
+    "description": "Catalog of fountain pens (and other products): makes, terms, offers, photos.",
+    "license": "GPL-3.0-or-later",
+    "homepage": "https://niainteractive.com",
+    "require": {
+        "php": ">=8.2"
+    }
+}

@@ -1,0 +1,29 @@
+fields:
+    group_id:
+        label: Group
+        type: dropdown
+        options: \Niainteractive\PenCatalog\Models\TermGroup::getSelectOptions
+        span: left
+        required: 1
+        comment: Plain dropdown (Winter 1.3 has no working relation form field).
+    name:
+        label: Term
+        span: right
+        required: 1
+    color_hex:
+        label: Colour swatch
+        span: left
+        comment: Optional hex value, e.g. #1B2A4A
+    sort_order:
+        label: Order
+        type: number
+        span: right
+    description:
+        label: Description
+        type: textarea
+        size: small
+        span: full
+    is_active:
+        label: Active
+        type: switch
+        default: true

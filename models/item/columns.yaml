@@ -1,0 +1,38 @@
+columns:
+    model:
+        label: Model
+        searchable: true
+        sortable: true
+    brand:
+        label: Make
+        relation: brand
+        select: name
+        searchable: true
+        sortable: true
+    inspiration:
+        label: Inspiration
+        searchable: true
+        sortable: true
+    nib_swappable:
+        label: Nib Swappable
+        type: partial
+        path: $/niainteractive/pencatalog/controllers/items/_nib_swappable.htm
+    length_closed:
+        label: Length
+        type: number
+        sortable: true
+    weight:
+        label: Weight
+        type: number
+        sortable: true
+    rating:
+        label: Rating
+        type: number
+        sortable: true
+    is_published:
+        label: Published
+        type: switch
+    updated_at:
+        label: Updated
+        type: datetime
+        sortable: true

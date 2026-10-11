@@ -1,0 +1,8 @@
+columns:
+    name:
+        label: Type
+        searchable: true
+        sortable: true
+    is_active:
+        label: Active
+        type: switch

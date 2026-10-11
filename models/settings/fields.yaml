@@ -1,0 +1,24 @@
+fields:
+    require_login:
+        label: Require a front-end login to view the catalog
+        comment: Turn this off to make the catalog publicly readable.
+        type: switch
+        default: true
+        span: left
+    show_offers:
+        label: Show purchase offers on the detail page
+        comment: Lengths are stored in millimetres, weight in grams. No conversion is applied.
+        type: switch
+        default: true
+        span: right
+    default_currency:
+        label: Default currency
+        comment: Three-letter code, e.g. USD, EUR, GBP.
+        type: text
+        default: USD
+        span: left
+    rows_per_page:
+        label: Rows per page
+        type: number
+        default: 50
+        span: right
