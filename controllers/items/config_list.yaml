@@ -3,6 +3,7 @@ list: $/niainteractive/pencatalog/models/item/columns.yaml
 modelClass: Niainteractive\PenCatalog\Models\Item
 recordUrl: niainteractive/pencatalog/items/update/:id
 recordsPerPage: 50
+showCheckboxes: true
 showSetup: true
 showSorting: true
 defaultSort:

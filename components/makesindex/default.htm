@@ -1,0 +1,15 @@
+{% if makes|length %}
+<div class="row">
+{% for make in makes %}
+    <div class="col-sm-4 col-md-3" style="margin-bottom:14px;">
+        <a href="/pens?make={{ make.slug }}"
+           style="display:block; padding:14px 16px; border:1px solid #e3e0d8; border-radius:8px; background:#fff; text-decoration:none;">
+            <strong style="color:#222;">{{ make.name }}</strong>
+            <span style="float:right; color:#999;">{{ make.items_count }}</span>
+        </a>
+    </div>
+{% endfor %}
+</div>
+{% else %}
+<p>No makes yet.</p>
+{% endif %}

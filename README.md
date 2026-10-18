@@ -200,3 +200,35 @@ missing data, not a bug. Always pull `/vocabularies` first and send `terms`, `ra
 with the pen. Terms must match the vocabulary exactly; `nationality`, `material`, `shape`,
 `nib-size`, `nib-material`, `ink-system` and the single-select `nib-swappable` are the groups to
 fill. Rating is 1-10 in half points.
+
+### Member lists and the ink log (1.0.8)
+
+Signed-in members keep two private lists against the catalogue: favorites and owned
+(`member_pens`, one row per `(user, item, list)`, so a pen can be both wanted and owned).
+The catalogue remains the source of truth for what a pen *is*; the member row holds only
+their relationship to it — price paid, date acquired, nib, notes. Deleting a catalogue
+item therefore strands member rows, which is why unpublishing is preferred.
+
+State changes go through plain routes in `routes.php` rather than the AJAX framework:
+
+| Route | Does |
+|---|---|
+| `GET favorites/add` · `GET favorites/remove` | add or remove in either list |
+| `GET favorites/bought` | move a favorites row onto the owned list, folding quantities if already owned |
+| `POST favorites/update` | save the per-row fields (needs `_token`) |
+| `POST ink-log/add` · `GET ink-log/clean` · `GET ink-log/remove` | fill and clean entries |
+
+Two gotchas worth keeping in mind:
+
+- **`\Auth::getUser()`, not `\Auth::guard('web')`.** Winter's user plugin swaps in its own
+  `AuthManager`, which has no `guard()` method; calling it throws. The same manager has no
+  `check()` either. `getUser()` is the one that works.
+- **The AJAX framework was not usable here.** Snowboard sends no CSRF token, so a
+  `data-request` button failed silently. Links plus one POST form with a rendered `_token`
+  cover the same ground, work with JavaScript off, and are testable with curl. The one
+  exception is the optimistic star/plus toggle in the layout, which paints instantly and
+  fires the same URL with `fetch()`; if the request fails it reverts.
+
+The ink log is one row per fill, "current" while `cleaned_on` is null — so the same table
+answers both "what is inked right now" and "what have I used", and cleaning a pen is a
+date stamp rather than a move between tables.

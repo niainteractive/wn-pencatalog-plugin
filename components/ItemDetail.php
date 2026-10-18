@@ -92,6 +92,18 @@ class ItemDetail extends ComponentBase
         $this->page['photos'] = $this->photos;
         $this->page['videoEmbeds'] = $this->videoEmbeds;
         $this->page['photo'] = $this->photos->where('is_primary', 1)->first() ?: $this->photos->first();
+
+        /* Member list state for this pen */
+        $user = \Auth::getUser();
+        $this->page['canUseLists'] = (bool) $user;
+        $this->page['returnUrl'] = request()->getRequestUri();
+        $this->page['inWish'] = false;
+        $this->page['isOwned'] = false;
+        if ($user) {
+            $map = \Niainteractive\PenCatalog\Models\MemberPen::mapForUser($user->id);
+            $this->page['inWish'] = !empty($map[$this->item->id]['wish']);
+            $this->page['isOwned'] = !empty($map[$this->item->id]['owned']);
+        }
     }
 
     protected function signedIn()

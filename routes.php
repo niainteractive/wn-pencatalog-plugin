@@ -37,3 +37,101 @@ Route::group([
     Route::get('item-types',   [Api::class, 'itemTypesIndex']);
     Route::post('item-types',  [Api::class, 'itemTypeStore']);
 });
+
+/*
+ * Member list actions as plain links. No `use` statements here: this file has
+ * executable code above, and PHP requires imports at the top of the file.
+ */
+\Illuminate\Support\Facades\Route::middleware('web')->group(function () {
+
+    \Illuminate\Support\Facades\Route::get('favorites/add', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        $list = request('list') === 'owned' ? 'owned' : 'wish';
+        if ($itemId = (int) request('item_id')) {
+            \Niainteractive\PenCatalog\Models\MemberPen::addForUser($user->id, $itemId, $list);
+        }
+        $back = (string) request('return');
+        if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') {
+            $back = '/pens';
+        }
+        return \Illuminate\Support\Facades\Redirect::to($back);
+    });
+
+    \Illuminate\Support\Facades\Route::get('favorites/remove', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        $list = request('list') === 'owned' ? 'owned' : 'wish';
+        if ($itemId = (int) request('item_id')) {
+            \Niainteractive\PenCatalog\Models\MemberPen::removeForUser($user->id, $itemId, $list);
+        }
+        $back = (string) request('return');
+        if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') {
+            $back = '/pens';
+        }
+        return \Illuminate\Support\Facades\Redirect::to($back);
+    });
+
+    \Illuminate\Support\Facades\Route::post('favorites/update', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        $list = request('list') === 'owned' ? 'owned' : 'wish';
+        $row = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
+            ->inList($list)->find((int) request('row_id'));
+        if ($row) {
+            foreach (['quantity','price_paid','acquired_on','condition','nib_grind','serial_no','notes','status'] as $f) {
+                if (request()->has($f)) {
+                    $row->{$f} = request($f) === '' ? null : request($f);
+                }
+            }
+            $row->save();
+        }
+        $back = (string) request('return');
+        if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') { $back = '/favorites'; }
+        return \Illuminate\Support\Facades\Redirect::to($back);
+    });
+
+    \Illuminate\Support\Facades\Route::get('favorites/bought', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        \Niainteractive\PenCatalog\Models\MemberPen::markBought($user->id, (int) request('row_id'));
+        $back = (string) request('return');
+        if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') { $back = '/favorites'; }
+        return \Illuminate\Support\Facades\Redirect::to($back);
+    });
+
+    \Illuminate\Support\Facades\Route::post('ink-log/add', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        $itemId = (int) request('item_id');
+        $ownsIt = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
+            ->inList('owned')->where('item_id', $itemId)->exists();
+        if ($ownsIt) {
+            $e = new \Niainteractive\PenCatalog\Models\InkLogEntry();
+            $e->user_id = $user->id;
+            $e->item_id = $itemId;
+            $e->ink_brand = request('ink_brand');
+            $e->ink_name = request('ink_name');
+            $e->ink_color = request('ink_color');
+            $e->filled_on = request('filled_on') ?: date('Y-m-d');
+            $e->notes = request('notes');
+            $e->save();
+        }
+        return \Illuminate\Support\Facades\Redirect::to('/ink-log');
+    });
+
+    \Illuminate\Support\Facades\Route::get('ink-log/clean', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        $row = \Niainteractive\PenCatalog\Models\InkLogEntry::forUser($user->id)->find((int) request('row_id'));
+        if ($row) { $row->cleaned_on = date('Y-m-d'); $row->save(); }
+        return \Illuminate\Support\Facades\Redirect::to('/ink-log');
+    });
+
+    \Illuminate\Support\Facades\Route::get('ink-log/remove', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        \Niainteractive\PenCatalog\Models\InkLogEntry::forUser($user->id)->where('id', (int) request('row_id'))->delete();
+        return \Illuminate\Support\Facades\Redirect::to('/ink-log');
+    });
+});

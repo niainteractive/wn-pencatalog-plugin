@@ -6,6 +6,24 @@
 {% else %}
     <h1>{{ item.brand.name }} {{ item.model }}</h1>
 
+    {% if canUseLists %}
+        <p style="margin:-6px 0 16px; font-size:15px;">
+            {% if inWish %}
+                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="On your favorites - click to remove" style="text-decoration:none;color:#8a5a00;font-size:20px;">&#9733;</a>
+            {% else %}
+                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="Add to favorites" style="text-decoration:none;font-size:20px;">&#9734;</a>
+            {% endif %}
+            <span style="color:#777; margin-right:22px;">Favorites</span>
+
+            {% if isOwned %}
+                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="You own this - click to remove" style="text-decoration:none;color:#2c5f45;font-size:20px;">&#10003;</a>
+            {% else %}
+                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="Add to my pens" style="text-decoration:none;font-size:20px;">&#43;</a>
+            {% endif %}
+            <span style="color:#777;">I own this</span>
+        </p>
+    {% endif %}
+
     {% if photo and photo.url %}
         <p><img src="{{ photo.url }}" alt="{{ photo.caption }}" style="max-width:440px; height:auto"></p>
         {# A freely-licensed photo has to carry its credit where a reader can see it, not just in
@@ -18,6 +36,18 @@
 
     <table style="border-collapse:collapse; margin-bottom:20px">
         <tbody>
+            <tr>
+                <th style="text-align:left; padding:5px 16px 5px 0; vertical-align:top">Make</th>
+                <td style="padding:5px 0">
+                    {% if item.brand %}<a href="/pens?make={{ item.brand.slug }}">{{ item.brand.name }}</a>{% endif %}
+                </td>
+            </tr>
+            {% if item.type %}
+                <tr><th style="text-align:left; padding:5px 16px 5px 0">Type</th><td style="padding:5px 0">{{ item.type.name }}</td></tr>
+            {% endif %}
+            {% if item.inspiration %}
+                <tr><th style="text-align:left; padding:5px 16px 5px 0">Inspiration</th><td style="padding:5px 0">{{ item.inspiration }}</td></tr>
+            {% endif %}
             {% for groupSlug, group in termGroups %}
                 <tr>
                     <th style="text-align:left; padding:5px 16px 5px 0; vertical-align:top">{{ group.label }}</th>

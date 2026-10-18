@@ -27,6 +27,23 @@ class Plugin extends PluginBase
         });
 
         /*
+         * Member address fields. Saved alongside the Winter.User account form:
+         * the account component runs the save, we fill these columns when the
+         * request carries them. Columns: address, city, region, postal_code, country.
+         */
+        if (class_exists(\Winter\User\Models\User::class)) {
+            \Winter\User\Models\User::extend(function ($model) {
+                $model->bindEvent('model.beforeSave', function () use ($model) {
+                    foreach (['address', 'city', 'region', 'postal_code', 'country'] as $field) {
+                        if (\Input::has($field)) {
+                            $model->{$field} = \Input::get($field);
+                        }
+                    }
+                });
+            });
+        }
+
+        /*
          * Slugs are generated ourselves (see the GeneratesSlug trait).
          */
         foreach ([\Niainteractive\PenCatalog\Models\Make::class,
@@ -59,6 +76,9 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
+            \Niainteractive\PenCatalog\Components\MakesIndex::class => 'makesIndex',
+            \Niainteractive\PenCatalog\Components\MemberList::class => 'memberList',
+            \Niainteractive\PenCatalog\Components\InkLog::class => 'inkLog',
             \Niainteractive\PenCatalog\Components\CatalogTable::class => 'catalogTable',
             \Niainteractive\PenCatalog\Components\ItemDetail::class => 'itemDetail',
         ];
