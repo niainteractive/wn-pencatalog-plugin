@@ -24,6 +24,21 @@
                             {% endif %}
                         {% elseif column.kind == 'model' %}
                             <a href="/pen/{{ row.item.slug }}">{{ row.item.model }}</a>
+                        {% elseif column.kind == 'member' %}
+                            {% if canUseLists %}
+                                {% set inWish = memberLists[row.item.id].wish ?? false %}
+                                {% set isOwned = memberLists[row.item.id].owned ?? false %}
+                                {% if inWish %}
+                                    <a data-toggle-list href="/favorites/remove?item_id={{ row.item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="On your favorites — click to remove" style="text-decoration:none;color:#8a5a00;">&#9733;</a>
+                                {% else %}
+                                    <a data-toggle-list href="/favorites/add?item_id={{ row.item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="Add to favorites" style="text-decoration:none;">&#9734;</a>
+                                {% endif %}
+                                {% if isOwned %}
+                                    <a data-toggle-list href="/favorites/remove?item_id={{ row.item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="You own this — click to remove" style="text-decoration:none;color:#2c5f45;">&#10003;</a>
+                                {% else %}
+                                    <a data-toggle-list href="/favorites/add?item_id={{ row.item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="Add to my pens" style="text-decoration:none;">&#43;</a>
+                                {% endif %}
+                            {% endif %}
                         {% elseif column.kind == 'terms' %}
                             {% for term in row.terms[column.group] ?? [] %}
                                 <a href="/pens?term[{{ column.group }}]={{ term.slug }}">{{ term.name }}</a>{% if not loop.last %}, {% endif %}

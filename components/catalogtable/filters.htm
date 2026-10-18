@@ -1,5 +1,10 @@
 <form method="get" action="/pens" style="margin:0 0 14px 0">
     <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end">
+        <label>Search<br>
+            <input type="text" name="q" value="{{ get.q }}" placeholder="make, model, inspiration"
+                   style="padding:4px; min-width:230px">
+        </label>
+
         <label>Make<br>
             <input type="text" name="make" value="{{ get.make }}" placeholder="e.g. pilot" style="padding:4px">
         </label>
@@ -12,6 +17,14 @@
                 {% endfor %}
             </select>
         </label>
+
+        {% for groupSlug, terms in filterLinks %}
+            {% for slug, meta in terms %}
+                {% if meta.active %}<input type="hidden" name="term[{{ groupSlug }}]" value="{{ slug }}">{% endif %}
+            {% endfor %}
+        {% endfor %}
+        {% if get.sort %}<input type="hidden" name="sort" value="{{ get.sort }}">{% endif %}
+        {% if get.dir %}<input type="hidden" name="dir" value="{{ get.dir }}">{% endif %}
 
         <button type="submit" style="padding:5px 12px">Filter</button>
         <a href="{{ 'pens'|page }}" style="padding:5px 12px">Reset</a>

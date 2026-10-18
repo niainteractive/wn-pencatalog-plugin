@@ -1,0 +1,95 @@
+<div id="memberList">
+{% if isGuest %}
+    <div class="alert alert-warning">Please <a href="/login">sign in</a> to use your favorites.</div>
+{% else %}
+
+    <form method="get" action="/favorites/add" style="margin-bottom:26px;">
+        <input type="hidden" name="list" value="{{ listKey }}">
+        <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'favorites' }}">
+        <div class="row">
+            <div class="col-sm-9">
+                <select name="item_id" class="form-control">
+                    <option value="">— add a pen from the catalogue —</option>
+                    {% for opt in catalogOptions %}
+                        <option value="{{ opt.id }}">{{ opt.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary btn-block">Add</button>
+            </div>
+        </div>
+    </form>
+
+    {% if rows|length == 0 %}
+        <p style="color:#777;">Nothing here yet.</p>
+    {% else %}
+        {% for row in rows %}
+            <div class="well" style="padding:16px 18px;">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <strong>
+                            {% if row.item %}
+                                <a href="/pen/{{ row.item.slug }}">{{ row.item.brand.name ?? '' }} {{ row.item.model }}</a>
+                            {% else %}
+                                {{ row.notes ?? 'Pen' }}
+                            {% endif %}
+                        </strong>
+                        <div style="color:#555; font-size:12.5px; margin-top:5px;">
+                            {% if row.item %}
+                                {% if row.rating %}<span title="Rating">{{ row.rating + 0 }} / 10</span>{% endif %}
+                                {% if row.nationality %}<span style="color:#bbb;"> &middot; </span>{{ row.nationality }}{% endif %}
+                                {% if row.nib_type %}<span style="color:#bbb;"> &middot; </span>{{ row.nib_type }}{% endif %}
+                                {% if row.ink %}<span style="color:#bbb;"> &middot; </span>{{ row.ink }}{% endif %}
+                            {% else %}
+                                not in the catalogue
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-sm-5" style="text-align:right;">
+                        {% if listKey == 'wish' %}
+                            <a class="btn btn-link" style="color:#2c5f45;padding-right:12px;"
+                               href="/favorites/bought?row_id={{ row.id }}&return=/favorites">I bought it</a>
+                        {% elseif row.item_id %}
+                            <a class="btn btn-link" style="color:#1f3a5f;padding-right:12px;"
+                               href="/ink-log?pen={{ row.item_id }}">Ink it</a>
+                        {% endif %}
+                        <a class="btn btn-link" style="color:#a62b1f;padding-right:0;"
+                           href="/favorites/remove?item_id={{ row.item_id }}&list={{ listKey }}&return=/{{ listKey == 'owned' ? 'mypens' : 'favorites' }}">Remove</a>
+                    </div>
+                </div>
+
+                <form method="post" action="/favorites/update" style="margin-top:12px;">
+                    <input type="hidden" name="_token" value="{{ csrfToken }}">
+                    <input type="hidden" name="list" value="{{ listKey }}">
+                    <input type="hidden" name="row_id" value="{{ row.id }}">
+                    <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'favorites' }}">
+                    <div class="row">
+                        <div class="col-sm-2 form-group">
+                            <label style="font-size:11px;text-transform:uppercase;color:#888;">Qty</label>
+                            <input name="quantity" class="form-control input-sm" value="{{ row.quantity }}" size="3">
+                        </div>
+                        <div class="col-sm-3 form-group">
+                            <label style="font-size:11px;text-transform:uppercase;color:#888;">Price paid</label>
+                            <input name="price_paid" class="form-control input-sm" value="{{ row.price_paid }}">
+                        </div>
+                        <div class="col-sm-3 form-group">
+                            <label style="font-size:11px;text-transform:uppercase;color:#888;">Acquired</label>
+                            <input name="acquired_on" type="date" class="form-control input-sm" value="{{ row.acquired_on }}">
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label style="font-size:11px;text-transform:uppercase;color:#888;">Nib</label>
+                            <input name="nib_grind" class="form-control input-sm" value="{{ row.nib_grind }}">
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label style="font-size:11px;text-transform:uppercase;color:#888;">&nbsp;</label>
+                            <button type="submit" class="btn btn-default btn-sm btn-block">Save</button>
+                        </div>
+                    </div>
+                    <input name="notes" class="form-control input-sm" placeholder="Notes (private)" value="{{ row.notes }}">
+                </form>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+</div>

@@ -5,6 +5,7 @@ use Niainteractive\PenCatalog\Models\Item;
 use Niainteractive\PenCatalog\Models\Make;
 use Niainteractive\PenCatalog\Models\Settings;
 use Niainteractive\PenCatalog\Models\TermGroup;
+use Niainteractive\PenCatalog\Models\MemberPen;
 
 /**
  * Sortable, filterable table of catalog entries.
@@ -88,7 +89,7 @@ class CatalogTable extends ComponentBase
         }
 
         try {
-            return (bool) \Auth::guard('web')->check();
+            return (bool) \Auth::getUser();
         } catch (\Throwable $e) {
             return false;
         }
@@ -132,6 +133,19 @@ class CatalogTable extends ComponentBase
                 // unknown make: return nothing rather than silently ignoring the filter
                 $query->whereRaw('1 = 0');
             }
+        }
+
+        /* Free-text search: make, model or inspiration */
+        $q = trim((string) get('q'));
+        if ($q !== '') {
+            $like = '%' . $q . '%';
+            $query->where(function ($w) use ($like) {
+                $w->where('niainteractive_pencatalog_items.model', 'like', $like)
+                  ->orWhere('niainteractive_pencatalog_items.inspiration', 'like', $like)
+                  ->orWhereHas('brand', function ($b) use ($like) {
+                      $b->where('name', 'like', $like);
+                  });
+            });
         }
 
         /* Term filters: ?term[nationality]=japanese */
@@ -182,6 +196,7 @@ class CatalogTable extends ComponentBase
             ['key' => 'nib-type',    'label' => 'Nib Type',    'kind' => 'terms', 'group' => 'nib-type'],
             ['key' => 'ink-system',  'label' => 'Ink',         'kind' => 'terms', 'group' => 'ink-system'],
             ['key' => 'weight',      'label' => 'Weight',      'kind' => 'field', 'sort' => 'weight', 'suffix' => ' g'],
+            ['key' => 'member',      'label' => 'My lists',    'kind' => 'member'],
         ];
 
         /* Sort links (flip direction on the active column) */
@@ -225,6 +240,26 @@ class CatalogTable extends ComponentBase
         $this->page['items'] = $this->items;
         $this->page['groupLabels'] = $groups->pluck('name', 'slug')->all();
         $this->page['make'] = $this->make;
+        $this->page['returnUrl'] = request()->getRequestUri();
+
+        /* Member lists: which pens the signed-in member already wants or owns */
+        $this->page['canUseLists'] = (bool) \Auth::getUser();
+        $this->page['memberLists'] = $this->page['canUseLists']
+            ? MemberPen::mapForUser(\Auth::getUser()->id)
+            : [];
+    }
+
+    public function onAddToList()
+    {
+        $user = \Auth::getUser();
+        if (!$user) {
+            return;
+        }
+        $userId = $user->id;
+        $list = post('list') === 'owned' ? 'owned' : 'wish';
+        if ($itemId = (int) post('item_id')) {
+            MemberPen::addForUser($userId, $itemId, $list);
+        }
     }
 
     /** AJAX filter/sort refresh (progressive enhancement) */
