@@ -1,6 +1,6 @@
 <div id="memberList">
 {% if isGuest %}
-    <div class="alert alert-warning">Please <a href="/login">sign in</a> to use your wish list.</div>
+    <div class="alert alert-warning">Please <a href="/login">sign in</a> to use your lists.</div>
 {% else %}
 
     <form method="get" action="/favorites/add" style="margin-bottom:26px;">
@@ -50,12 +50,16 @@
                         {% if listKey == 'wish' %}
                             <a class="btn btn-link" style="color:#2c5f45;padding-right:12px;"
                                href="/favorites/bought?row_id={{ row.id }}&return=/wishlist">I bought it</a>
+                            <a class="btn btn-link" style="color:#7a3e9d;padding-right:12px;"
+                               href="/favorites/gifted?row_id={{ row.id }}&return=/wishlist">I gifted it</a>
+                        {% elseif listKey == 'gift' %}
+                            <span class="label label-default" style="background:#7a3e9d;margin-right:12px;">Gifted</span>
                         {% elseif row.item_id %}
                             <a class="btn btn-link" style="color:#1f3a5f;padding-right:12px;"
                                href="/ink-log?pen={{ row.item_id }}">Ink it</a>
                         {% endif %}
                         <a class="btn btn-link" style="color:#a62b1f;padding-right:0;"
-                           href="/favorites/remove?item_id={{ row.item_id }}&list={{ listKey }}&return=/{{ listKey == 'owned' ? 'mypens' : 'wishlist' }}">Remove</a>
+                           href="/favorites/remove?item_id={{ row.item_id }}&list={{ listKey }}&return=/{{ listKey == 'owned' ? 'mypens' : (listKey == 'gift' ? 'gifts' : 'wishlist') }}">Remove</a>
                     </div>
                 </div>
 
@@ -74,7 +78,7 @@
                             <input name="price_paid" class="form-control input-sm" value="{{ row.price_paid }}">
                         </div>
                         <div class="col-sm-3 form-group">
-                            <label style="font-size:11px;text-transform:uppercase;color:#888;">Acquired</label>
+                            <label style="font-size:11px;text-transform:uppercase;color:#888;">{{ listKey == 'gift' ? 'Gifted on' : 'Acquired' }}</label>
                             <input name="acquired_on" type="date" class="form-control input-sm" value="{{ row.acquired_on }}">
                         </div>
                         <div class="col-sm-2 form-group">
@@ -86,6 +90,10 @@
                             <button type="submit" class="btn btn-default btn-sm btn-block">Save</button>
                         </div>
                     </div>
+                    {% if listKey == 'gift' %}
+                        <input name="recipient" class="form-control input-sm" style="margin-bottom:8px;"
+                               placeholder="Recipient - who is this pen for?" value="{{ row.recipient }}">
+                    {% endif %}
                     <input name="notes" class="form-control input-sm" placeholder="Notes (private)" value="{{ row.notes }}">
                 </form>
             </div>

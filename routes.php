@@ -47,7 +47,7 @@ Route::group([
     \Illuminate\Support\Facades\Route::get('favorites/add', function () {
         $user = \Auth::getUser();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
-        $list = request('list') === 'owned' ? 'owned' : 'wish';
+        $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         if ($itemId = (int) request('item_id')) {
             \Niainteractive\PenCatalog\Models\MemberPen::addForUser($user->id, $itemId, $list);
         }
@@ -61,7 +61,7 @@ Route::group([
     \Illuminate\Support\Facades\Route::get('favorites/remove', function () {
         $user = \Auth::getUser();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
-        $list = request('list') === 'owned' ? 'owned' : 'wish';
+        $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         if ($itemId = (int) request('item_id')) {
             \Niainteractive\PenCatalog\Models\MemberPen::removeForUser($user->id, $itemId, $list);
         }
@@ -75,7 +75,7 @@ Route::group([
     \Illuminate\Support\Facades\Route::post('favorites/update', function () {
         $user = \Auth::getUser();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
-        $list = request('list') === 'owned' ? 'owned' : 'wish';
+        $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         $row = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
             ->inList($list)->find((int) request('row_id'));
         if ($row) {
@@ -97,6 +97,15 @@ Route::group([
         \Niainteractive\PenCatalog\Models\MemberPen::markBought($user->id, (int) request('row_id'));
         $back = (string) request('return');
         if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') { $back = '/favorites'; }
+        return \Illuminate\Support\Facades\Redirect::to($back);
+    });
+
+    \Illuminate\Support\Facades\Route::get('favorites/gifted', function () {
+        $user = \Auth::getUser();
+        if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
+        \Niainteractive\PenCatalog\Models\MemberPen::markGifted($user->id, (int) request('row_id'));
+        $back = (string) request('return');
+        if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') { $back = '/gifts'; }
         return \Illuminate\Support\Facades\Redirect::to($back);
     });
 

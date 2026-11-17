@@ -99,10 +99,12 @@ class ItemDetail extends ComponentBase
         $this->page['returnUrl'] = request()->getRequestUri();
         $this->page['inWish'] = false;
         $this->page['isOwned'] = false;
+        $this->page['inGift'] = false;
         if ($user) {
             $map = \Niainteractive\PenCatalog\Models\MemberPen::mapForUser($user->id);
             $this->page['inWish'] = !empty($map[$this->item->id]['wish']);
             $this->page['isOwned'] = !empty($map[$this->item->id]['owned']);
+            $this->page['inGift'] = !empty($map[$this->item->id]['gift']);
         }
     }
 

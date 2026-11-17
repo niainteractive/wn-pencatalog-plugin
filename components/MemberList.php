@@ -10,7 +10,7 @@ class MemberList extends ComponentBase
     {
         return [
             'name'        => 'Member list',
-            'description' => 'A signed-in member\'s wish list or owned pens.',
+            'description' => 'A signed-in member\'s wish list, gift list or owned pens.',
         ];
     }
 
@@ -23,7 +23,9 @@ class MemberList extends ComponentBase
 
     protected function list()
     {
-        return $this->property('list', 'wish') === 'owned' ? 'owned' : 'wish';
+        $list = (string) $this->property('list', 'wish');
+
+        return in_array($list, ['owned', 'wish', 'gift'], true) ? $list : 'wish';
     }
 
     protected function userId()
@@ -80,6 +82,8 @@ class MemberList extends ComponentBase
                 'price_paid'  => $row->price_paid,
                 'acquired_on' => $row->acquired_on ? $row->acquired_on->format('Y-m-d') : '',
                 'nib_grind'   => $row->nib_grind,
+                'recipient'   => $row->recipient,
+                'status'      => $row->status,
                 'notes'       => $row->notes,
                 'rating'      => $row->item ? $row->item->rating : null,
                 'nationality' => implode(', ', $byGroup['nationality'] ?? []),
@@ -128,7 +132,7 @@ class MemberList extends ComponentBase
         if (!$row) {
             return [];
         }
-        foreach (['quantity', 'price_paid', 'acquired_on', 'condition', 'nib_grind', 'serial_no', 'notes', 'status'] as $field) {
+        foreach (['quantity', 'price_paid', 'acquired_on', 'condition', 'nib_grind', 'serial_no', 'notes', 'status', 'recipient'] as $field) {
             if (post($field) !== null) {
                 $row->{$field} = post($field) === '' ? null : post($field);
             }

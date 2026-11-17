@@ -21,6 +21,13 @@
                 <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="Add to my pens" style="text-decoration:none;font-size:20px;">&#43;</a>
             {% endif %}
             <span style="color:#777;">I own this</span>
+
+            {% if inGift %}
+                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=gift&return={{ returnUrl|url_encode }}" title="On your gift list - click to remove" style="text-decoration:none;color:#7a3e9d;font-size:20px;">&#9679;</a>
+            {% else %}
+                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=gift&return={{ returnUrl|url_encode }}" title="Add to gift list" style="text-decoration:none;font-size:20px;">&#9675;</a>
+            {% endif %}
+            <span style="color:#777;">Gift list</span>
         </p>
     {% endif %}
 

@@ -34,7 +34,7 @@ class MemberPen extends Model
         $row->user_id = $userId;
         $row->item_id = $itemId;
         $row->list = $list;
-        $row->status = $list === 'owned' ? 'owned' : 'wanted';
+        $row->status = $list === 'owned' ? 'owned' : ($list === 'gift' ? 'gifted' : 'wanted');
         $row->save();
         return $row;
     }
@@ -67,6 +67,40 @@ class MemberPen extends Model
         } else {
             $wish->list = 'owned';
             $wish->status = 'owned';
+            $wish->save();
+        }
+
+        return true;
+    }
+
+    /**
+     * Move a wish-list row into the gift list. The pen was never ours, so the
+     * row keeps its recipient and the date it was given but does not touch the
+     * owned list. Two gifts of the same pen fold into one row, like markBought().
+     */
+    public static function markGifted($userId, $rowId)
+    {
+        $wish = self::where('user_id', $userId)->where('list', 'wish')->find($rowId);
+        if (!$wish) {
+            return false;
+        }
+
+        $gift = $wish->item_id
+            ? self::where('user_id', $userId)->where('list', 'gift')->where('item_id', $wish->item_id)->first()
+            : null;
+
+        if ($gift) {
+            $gift->quantity = max(1, (int) $gift->quantity) + max(1, (int) $wish->quantity);
+            foreach (['notes', 'price_paid', 'acquired_on', 'recipient'] as $f) {
+                if (!$gift->{$f} && $wish->{$f}) {
+                    $gift->{$f} = $wish->{$f};
+                }
+            }
+            $gift->save();
+            $wish->delete();
+        } else {
+            $wish->list = 'gift';
+            $wish->status = 'gifted';
             $wish->save();
         }
 
