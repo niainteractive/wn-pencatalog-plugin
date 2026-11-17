@@ -48,8 +48,20 @@ class MemberList extends ComponentBase
         $records = MemberPen::forUser($this->userId())
             ->inList($this->list())
             ->with(['item.brand', 'item.type', 'item.terms.group'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            // Alphabetical by the label the page shows: brand then model,
+            // case-insensitive and natural (M2 before M10). Rows with no
+            // catalogue entry sort last, under their own note.
+            ->sortBy(function ($row) {
+                if (!$row->item) {
+                    return '~' . mb_strtolower((string) $row->notes);
+                }
+
+                $brand = $row->item->brand ? $row->item->brand->name : '';
+
+                return mb_strtolower(trim($brand . ' ' . $row->item->model));
+            }, SORT_NATURAL | SORT_FLAG_CASE)
+            ->values();
 
         foreach ($records as $row) {
             $byGroup = [];
