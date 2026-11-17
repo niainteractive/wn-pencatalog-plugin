@@ -1,0 +1,10 @@
+columns:
+    name:
+        label: Vendor
+        searchable: true
+        sortable: true
+    website:
+        label: Website
+    is_active:
+        label: Active
+        type: switch

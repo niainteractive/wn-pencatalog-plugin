@@ -1,0 +1,17 @@
+fields:
+    name:
+        label: Vendor
+        span: left
+        required: 1
+    website:
+        label: Website
+        span: right
+    notes:
+        label: Notes
+        type: textarea
+        size: small
+        span: full
+    is_active:
+        label: Active
+        type: switch
+        default: true
