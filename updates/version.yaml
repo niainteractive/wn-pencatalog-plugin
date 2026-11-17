@@ -43,3 +43,6 @@
 1.0.12:
     - "The recipient field on a gift row now saves. The plain /favorites/update route kept its own list of writable fields and recipient was missing from it, so the value was posted and discarded"
     - "Both save paths now read MemberPen::EDITABLE, so a field cannot be accepted by the AJAX handler and dropped by the route"
+
+1.0.13:
+    - "Member list pages no longer fail when a row has a date. MemberPen never declared acquired_on as a date, so Storm returned a string and the formatter called format() on it. Any row with Acquired or Gifted on filled in took the page down"

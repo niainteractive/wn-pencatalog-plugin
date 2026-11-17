@@ -80,7 +80,7 @@ class MemberList extends ComponentBase
                 'item'        => $row->item,
                 'quantity'    => $row->quantity,
                 'price_paid'  => $row->price_paid,
-                'acquired_on' => $row->acquired_on ? $row->acquired_on->format('Y-m-d') : '',
+                'acquired_on' => $row->acquired_on ? \Illuminate\Support\Carbon::parse($row->acquired_on)->format('Y-m-d') : '',
                 'nib_grind'   => $row->nib_grind,
                 'recipient'   => $row->recipient,
                 'status'      => $row->status,

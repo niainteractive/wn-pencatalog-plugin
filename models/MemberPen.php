@@ -11,6 +11,12 @@ class MemberPen extends Model
     public $table = 'niainteractive_pencatalog_member_pens';
 
     /**
+     * Date columns. Without this Storm hands back a string, and any code that
+     * treats acquired_on as a date - the list formatter does - dies on it.
+     */
+    protected $dates = ['acquired_on'];
+
+    /**
      * The row fields a member may change. Both save paths - the AJAX handler and
      * the plain /favorites/update route - read this list, so a new field cannot
      * be accepted by one and silently dropped by the other.
