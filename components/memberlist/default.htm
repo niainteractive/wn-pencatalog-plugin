@@ -5,7 +5,7 @@
 
     <form method="get" action="/favorites/add" style="margin-bottom:26px;">
         <input type="hidden" name="list" value="{{ listKey }}">
-        <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'favorites' }}">
+        <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'wishlist' }}">
         <div class="row">
             <div class="col-sm-9">
                 <select name="item_id" class="form-control">
@@ -49,13 +49,13 @@
                     <div class="col-sm-5" style="text-align:right;">
                         {% if listKey == 'wish' %}
                             <a class="btn btn-link" style="color:#2c5f45;padding-right:12px;"
-                               href="/favorites/bought?row_id={{ row.id }}&return=/favorites">I bought it</a>
+                               href="/favorites/bought?row_id={{ row.id }}&return=/wishlist">I bought it</a>
                         {% elseif row.item_id %}
                             <a class="btn btn-link" style="color:#1f3a5f;padding-right:12px;"
                                href="/ink-log?pen={{ row.item_id }}">Ink it</a>
                         {% endif %}
                         <a class="btn btn-link" style="color:#a62b1f;padding-right:0;"
-                           href="/favorites/remove?item_id={{ row.item_id }}&list={{ listKey }}&return=/{{ listKey == 'owned' ? 'mypens' : 'favorites' }}">Remove</a>
+                           href="/favorites/remove?item_id={{ row.item_id }}&list={{ listKey }}&return=/{{ listKey == 'owned' ? 'mypens' : 'wishlist' }}">Remove</a>
                     </div>
                 </div>
 
@@ -63,7 +63,7 @@
                     <input type="hidden" name="_token" value="{{ csrfToken }}">
                     <input type="hidden" name="list" value="{{ listKey }}">
                     <input type="hidden" name="row_id" value="{{ row.id }}">
-                    <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'favorites' }}">
+                    <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'wishlist' }}">
                     <div class="row">
                         <div class="col-sm-2 form-group">
                             <label style="font-size:11px;text-transform:uppercase;color:#888;">Qty</label>
