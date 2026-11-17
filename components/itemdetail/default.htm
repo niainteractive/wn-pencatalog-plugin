@@ -9,11 +9,11 @@
     {% if canUseLists %}
         <p style="margin:-6px 0 16px; font-size:15px;">
             {% if inWish %}
-                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="On your favorites - click to remove" style="text-decoration:none;color:#8a5a00;font-size:20px;">&#9733;</a>
+                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="On your wish list - click to remove" style="text-decoration:none;color:#8a5a00;font-size:20px;">&#9733;</a>
             {% else %}
-                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="Add to favorites" style="text-decoration:none;font-size:20px;">&#9734;</a>
+                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="Add to wish list" style="text-decoration:none;font-size:20px;">&#9734;</a>
             {% endif %}
-            <span style="color:#777; margin-right:22px;">Favorites</span>
+            <span style="color:#777; margin-right:22px;">Wish List</span>
 
             {% if isOwned %}
                 <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="You own this - click to remove" style="text-decoration:none;color:#2c5f45;font-size:20px;">&#10003;</a>

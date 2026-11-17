@@ -10,7 +10,7 @@ class MemberList extends ComponentBase
     {
         return [
             'name'        => 'Member list',
-            'description' => 'A signed-in member\'s favorites or owned pens.',
+            'description' => 'A signed-in member\'s wish list or owned pens.',
         ];
     }
 
