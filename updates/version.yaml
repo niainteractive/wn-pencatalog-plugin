@@ -36,3 +36,6 @@
     - "Wish-list rows carry two actions, I bought it and I gifted it. A pen's page carries a third toggle so a gift can be added directly from the catalogue"
     - "member_pens gains a recipient column, shown only on gift rows, with the date field relabelled Gifted on"
     - add_recipient_to_member_pens.php
+
+1.0.11:
+    - "Saving a gift row returns to the gift list. The row form still carried the two-list return rule, so edits made on /gifts landed on /wishlist"

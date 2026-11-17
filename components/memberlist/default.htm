@@ -5,7 +5,7 @@
 
     <form method="get" action="/favorites/add" style="margin-bottom:26px;">
         <input type="hidden" name="list" value="{{ listKey }}">
-        <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'wishlist' }}">
+        <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : (listKey == 'gift' ? 'gifts' : 'wishlist') }}">
         <div class="row">
             <div class="col-sm-9">
                 <select name="item_id" class="form-control">
@@ -67,7 +67,7 @@
                     <input type="hidden" name="_token" value="{{ csrfToken }}">
                     <input type="hidden" name="list" value="{{ listKey }}">
                     <input type="hidden" name="row_id" value="{{ row.id }}">
-                    <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : 'wishlist' }}">
+                    <input type="hidden" name="return" value="/{{ listKey == 'owned' ? 'mypens' : (listKey == 'gift' ? 'gifts' : 'wishlist') }}">
                     <div class="row">
                         <div class="col-sm-2 form-group">
                             <label style="font-size:11px;text-transform:uppercase;color:#888;">Qty</label>
