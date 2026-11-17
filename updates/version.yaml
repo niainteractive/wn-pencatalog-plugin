@@ -24,3 +24,9 @@
 1.0.8:
     - "Ink log: one row per fill, current while cleaned_on is null"
     - create_ink_log.php
+
+1.0.9:
+    - "Every backend create and update view now renders the form tag and the save toolbar. Only items/update.htm had carried the 1.0.6 fix, so the other twelve forms rendered fields with no submit button"
+    - "Member lists sort alphabetically by make then model, case-insensitive and natural, instead of newest first"
+    - "The Favorites label is now Wish List, and wish-list actions return to /wishlist after the page moved from /favorites"
+    - "Vendor model form config added to the repository. The vendor/ ignore rule is anchored to the repo root so models/vendor/ is no longer swallowed"
