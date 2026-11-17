@@ -10,6 +10,16 @@ class MemberPen extends Model
 {
     public $table = 'niainteractive_pencatalog_member_pens';
 
+    /**
+     * The row fields a member may change. Both save paths - the AJAX handler and
+     * the plain /favorites/update route - read this list, so a new field cannot
+     * be accepted by one and silently dropped by the other.
+     */
+    const EDITABLE = [
+        'quantity', 'price_paid', 'acquired_on', 'condition',
+        'nib_grind', 'serial_no', 'notes', 'status', 'recipient',
+    ];
+
     public $belongsTo = [
         'item' => [Item::class, 'key' => 'item_id'],
     ];

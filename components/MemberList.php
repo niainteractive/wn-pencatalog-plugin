@@ -132,7 +132,7 @@ class MemberList extends ComponentBase
         if (!$row) {
             return [];
         }
-        foreach (['quantity', 'price_paid', 'acquired_on', 'condition', 'nib_grind', 'serial_no', 'notes', 'status', 'recipient'] as $field) {
+        foreach (MemberPen::EDITABLE as $field) {
             if (post($field) !== null) {
                 $row->{$field} = post($field) === '' ? null : post($field);
             }

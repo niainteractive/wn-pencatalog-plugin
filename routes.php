@@ -79,7 +79,7 @@ Route::group([
         $row = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
             ->inList($list)->find((int) request('row_id'));
         if ($row) {
-            foreach (['quantity','price_paid','acquired_on','condition','nib_grind','serial_no','notes','status'] as $f) {
+            foreach (\Niainteractive\PenCatalog\Models\MemberPen::EDITABLE as $f) {
                 if (request()->has($f)) {
                     $row->{$f} = request($f) === '' ? null : request($f);
                 }
