@@ -46,3 +46,9 @@
 
 1.0.13:
     - "Member list pages no longer fail when a row has a date. MemberPen never declared acquired_on as a date, so Storm returned a string and the formatter called format() on it. Any row with Acquired or Gifted on filled in took the page down"
+
+1.0.14:
+    - "My Pens and Gift List gain a colour field for the variant you actually own, separate from the catalogue Colour term, which describes the model"
+    - "A member row can carry its own photo. Uploads go to storage/app/media/mypens under the member id, and are served through /member-photo/{row}, which checks ownership before streaming"
+    - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
+    - add_variant_fields_to_member_pens.php

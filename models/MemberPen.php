@@ -23,7 +23,7 @@ class MemberPen extends Model
      */
     const EDITABLE = [
         'quantity', 'price_paid', 'acquired_on', 'condition',
-        'nib_grind', 'serial_no', 'notes', 'status', 'recipient',
+        'nib_grind', 'variant_color', 'serial_no', 'notes', 'status', 'recipient',
     ];
 
     public $belongsTo = [
@@ -125,6 +125,14 @@ class MemberPen extends Model
 
     public static function removeForUser($userId, $itemId, $list)
     {
+        /* Drop the member's own photo with the row, or the file outlives the record. */
+        $rows = self::where('user_id', $userId)->where('item_id', $itemId)->where('list', $list)->get();
+        foreach ($rows as $row) {
+            if ($row->photo && is_file(storage_path('app/'.$row->photo))) {
+                @unlink(storage_path('app/'.$row->photo));
+            }
+        }
+
         return self::where('user_id', $userId)->where('item_id', $itemId)->where('list', $list)->delete();
     }
 

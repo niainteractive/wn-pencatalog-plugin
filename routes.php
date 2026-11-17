@@ -84,6 +84,41 @@ Route::group([
                     $row->{$f} = request($f) === '' ? null : request($f);
                 }
             }
+
+            /*
+             * The member's own photo. Kept out of EDITABLE because it is a file,
+             * not a posted value, and stored under a per-user folder so one
+             * member can never reach another's picture: the GET route below
+             * checks ownership before streaming it.
+             */
+            if (request()->hasFile('photo')) {
+                $file = request()->file('photo');
+                if ($file && $file->isValid()) {
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $ok = in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true)
+                        && $file->getSize() <= 6 * 1024 * 1024;
+                    if ($ok) {
+                        $dir = storage_path('app/member-photos');
+                        if (!is_dir($dir)) {
+                            @mkdir($dir, 0775, true);
+                        }
+                        $name = 'u'.$user->id.'-r'.$row->id.'-'.substr(sha1(uniqid('', true)), 0, 8).'.'.$ext;
+                        $file->move($dir, $name);
+                        if ($row->photo && is_file(storage_path('app/'.$row->photo))) {
+                            @unlink(storage_path('app/'.$row->photo));
+                        }
+                        $row->photo = 'member-photos/'.$name;
+                    }
+                }
+            }
+
+            if (request('remove_photo')) {
+                if ($row->photo && is_file(storage_path('app/'.$row->photo))) {
+                    @unlink(storage_path('app/'.$row->photo));
+                }
+                $row->photo = null;
+            }
+
             $row->save();
         }
         $back = (string) request('return');
@@ -107,6 +142,23 @@ Route::group([
         $back = (string) request('return');
         if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') { $back = '/gifts'; }
         return \Illuminate\Support\Facades\Redirect::to($back);
+    });
+
+    \Illuminate\Support\Facades\Route::get('member-photo/{row_id}', function ($rowId) {
+        $user = \Auth::getUser();
+        if (!$user) {
+            abort(403);
+        }
+        $row = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)->find((int) $rowId);
+        if (!$row || !$row->photo) {
+            abort(404);
+        }
+        $base = realpath(storage_path('app/member-photos'));
+        $real = realpath(storage_path('app/'.$row->photo));
+        if (!$base || !$real || strpos($real, $base) !== 0 || !is_file($real)) {
+            abort(404);
+        }
+        return \Response::file($real, ['Cache-Control' => 'private, max-age=600']);
     });
 
     \Illuminate\Support\Facades\Route::post('ink-log/add', function () {
