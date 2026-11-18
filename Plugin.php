@@ -81,6 +81,7 @@ class Plugin extends PluginBase
             \Niainteractive\PenCatalog\Components\InkLog::class => 'inkLog',
             \Niainteractive\PenCatalog\Components\CatalogTable::class => 'catalogTable',
             \Niainteractive\PenCatalog\Components\ItemDetail::class => 'itemDetail',
+            \Niainteractive\PenCatalog\Components\SuggestPen::class => 'suggestPen',
         ];
     }
 
@@ -102,6 +103,10 @@ class Plugin extends PluginBase
             'niainteractive.pencatalog.import_export' => [
                 'tab'   => 'Pen Catalog',
                 'label' => 'Import and export catalog data (CSV)',
+            ],
+            'niainteractive.pencatalog.manage_suggestions' => [
+                'tab'   => 'Pen Catalog',
+                'label' => 'Read and triage member suggestions',
             ],
             'niainteractive.pencatalog.access_settings' => [
                 'tab'   => 'Pen Catalog',
@@ -141,6 +146,12 @@ class Plugin extends PluginBase
                         'url'         => \Backend::url('niainteractive/pencatalog/items'),
                         'icon'        => 'icon-pencil',
                         'permissions' => ['niainteractive.pencatalog.manage_items'],
+                    ],
+                    'suggestions' => [
+                        'label'       => 'Suggestions',
+                        'url'         => \Backend::url('niainteractive/pencatalog/suggestions'),
+                        'icon'        => 'icon-lightbulb-o',
+                        'permissions' => ['niainteractive.pencatalog.manage_suggestions'],
                     ],
                     'makes' => [
                         'label'       => 'Makes',

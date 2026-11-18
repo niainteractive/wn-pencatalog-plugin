@@ -1,0 +1,9 @@
+scopes:
+    status:
+        label: Status
+        type: group
+        options:
+            new: New
+            promoted: Added
+            declined: Declined
+        conditions: status in (:filtered)

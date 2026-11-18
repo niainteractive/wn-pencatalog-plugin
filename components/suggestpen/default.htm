@@ -1,0 +1,43 @@
+<div id="suggestPenWrap" class="tb-card">
+{% if sent %}
+    <p class="mb-0"><strong>Thank you.</strong> Your suggestion is in the queue &mdash; it is how we decide which pens to add next.</p>
+{% elseif not member %}
+    <p class="mb-0"><a href="{{ 'login'|page }}">Sign in</a> to suggest a pen for the catalogue.</p>
+{% else %}
+    <h4 style="margin-bottom:6px;">Suggest a pen</h4>
+    <p style="color:#6b6b70; font-size:14px; margin-bottom:18px;">
+        Looking for something we have not listed? Tell us and it goes on the list of pens to add.
+    </p>
+
+    <form data-request="onSend" data-request-validate data-request-flash>
+        <div class="alert alert-danger" data-validate-error></div>
+        <input type="hidden" name="_ts" value="{{ formToken }}">
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5 mb-3">
+                <label>Make</label>
+                <input name="make" class="form-control" placeholder="e.g. Moonman">
+            </div>
+            <div class="col-sm-7 mb-3">
+                <label>Model *</label>
+                <input name="model" class="form-control" placeholder="e.g. A1" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Link <span style="opacity:.6">(optional)</span></label>
+            <input name="url" type="url" class="form-control" placeholder="https://...">
+        </div>
+
+        <div class="mb-3">
+            <label>Anything else <span style="opacity:.6">(optional)</span></label>
+            <textarea name="notes" rows="3" class="form-control" placeholder="Nib, finish, where you saw it&hellip;"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send suggestion</button>
+    </form>
+{% endif %}
+</div>

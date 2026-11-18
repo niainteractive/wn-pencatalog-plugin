@@ -1,0 +1,24 @@
+columns:
+    created_at:
+        label: Received
+        type: datetime
+        sortable: true
+    make:
+        label: Make
+        searchable: true
+        sortable: true
+    model:
+        label: Model
+        searchable: true
+        sortable: true
+    url:
+        label: Link
+        type: text
+        searchable: true
+    status:
+        label: Status
+        sortable: true
+    user:
+        label: Member
+        relation: user
+        select: email
