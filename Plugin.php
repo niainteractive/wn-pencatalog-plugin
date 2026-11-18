@@ -82,6 +82,7 @@ class Plugin extends PluginBase
             \Niainteractive\PenCatalog\Components\CatalogTable::class => 'catalogTable',
             \Niainteractive\PenCatalog\Components\ItemDetail::class => 'itemDetail',
             \Niainteractive\PenCatalog\Components\SuggestPen::class => 'suggestPen',
+            \Niainteractive\PenCatalog\Components\CatalogStats::class => 'catalogStats',
         ];
     }
 

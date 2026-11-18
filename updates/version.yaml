@@ -53,6 +53,9 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.26:
+    - "A catalogue stats component publishes live counts (pens, makes, vendors, pens on members' shelves) so the home page can show numbers that are true."
+
 1.0.25:
     - "The rating filter's options are handed to the page again, so the dropdown is no longer empty (it had been since the filter moved into its own partial)."
 
