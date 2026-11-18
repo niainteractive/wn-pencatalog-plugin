@@ -1,0 +1,53 @@
+<div style="padding:24px;">
+    <div class="callout callout-info" style="margin-bottom:20px;">
+        <div class="callout-content">
+            <p style="margin:0 0 6px;">
+                <strong><?= $totalAsked ?></strong> suggestions across
+                <strong><?= $totalPens ?></strong> distinct pens &mdash;
+                <strong><?= $unlistedPens ?></strong> of them not in the catalogue yet.
+            </p>
+            <p style="margin:0; color:#666;">
+                Declined suggestions are excluded. A pen already in the catalogue is marked
+                <em>Listed</em>, so it does not get added twice.
+            </p>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:40px;">#</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th style="width:110px;">Requests</th>
+                <th style="width:110px;">Members</th>
+                <th style="width:170px;">Last asked</th>
+                <th style="width:120px;">Catalogue</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if (!count($rows)): ?>
+            <tr><td colspan="7">No suggestions yet.</td></tr>
+        <?php endif; ?>
+        <?php foreach ($rows as $i => $row): ?>
+            <tr>
+                <td><?= $i + 1 ?></td>
+                <td><?= e($row->make ?: '—') ?></td>
+                <td><strong><?= e($row->model) ?></strong></td>
+                <td><?= (int) $row->requests ?></td>
+                <td><?= (int) $row->members ?></td>
+                <td><?= $row->last_at ? e(\Carbon\Carbon::parse($row->last_at)->format('d M Y')) : '—' ?></td>
+                <td>
+                    <?php if ($row->catalogue_item): ?>
+                        <a href="<?= Backend::url('niainteractive/pencatalog/items/update/'.$row->catalogue_item->id) ?>"
+                           class="text-success">Listed</a>
+                    <?php else: ?>
+                        <a href="<?= Backend::url('niainteractive/pencatalog/items/create') ?>"
+                           class="text-muted">Not listed</a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

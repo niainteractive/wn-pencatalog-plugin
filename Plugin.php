@@ -153,6 +153,12 @@ class Plugin extends PluginBase
                         'icon'        => 'icon-lightbulb-o',
                         'permissions' => ['niainteractive.pencatalog.manage_suggestions'],
                     ],
+                    'demand' => [
+                        'label'       => 'Demand',
+                        'url'         => \Backend::url('niainteractive/pencatalog/demand'),
+                        'icon'        => 'icon-bar-chart',
+                        'permissions' => ['niainteractive.pencatalog.manage_suggestions'],
+                    ],
                     'makes' => [
                         'label'       => 'Makes',
                         'url'         => \Backend::url('niainteractive/pencatalog/makes'),
