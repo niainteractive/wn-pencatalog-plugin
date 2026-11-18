@@ -86,6 +86,16 @@ class ItemDetail extends ComponentBase
         $this->photos = $this->item->photos;
         $this->videoEmbeds = $this->item->videoEmbeds();
 
+        /*
+         * The theme's page header prints the page title, so on a pen page that
+         * title has to be the pen - not the generic "Pen" from the CMS page.
+         * This also fixes the <title> tag, which is built the same way.
+         */
+        $title = trim(($this->item->brand ? $this->item->brand->name : '') . ' ' . $this->item->model);
+        if ($title !== '') {
+            $this->page->title = $title;
+        }
+
         $this->page['item'] = $this->item;
         $this->page['termGroups'] = $this->termGroups;
         $this->page['offers'] = $this->offers;

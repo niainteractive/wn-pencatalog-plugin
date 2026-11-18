@@ -4,7 +4,7 @@
 {% elseif not item %}
     <p>Pen not found.</p>
 {% else %}
-    <h1>{{ item.brand.name }} {{ item.model }}</h1>
+    <h2 class="pen-detail-title">{{ item.brand.name }} {{ item.model }}</h2>
 
     {% if canUseLists %}
         <p style="margin:-6px 0 16px; font-size:15px;">

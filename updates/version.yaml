@@ -53,6 +53,12 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.22:
+    - "The pen detail component no longer prints a second h1 now that the page heading carries the pen's name; the record heading is an h2."
+
+1.0.21:
+    - "A pen detail page now takes the pen's own name for its heading and browser title, instead of the generic page title from the CMS."
+
 1.0.20:
     - "Backend-created pens now record who made them and, for anyone who is not a superuser, arrive unpublished. The publish action (single pen or bulk) is what puts them in front of the public, so an editor's work is reviewed before it is seen."
 
