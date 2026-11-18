@@ -6,5 +6,8 @@
     "homepage": "https://niainteractive.com",
     "require": {
         "php": ">=8.2"
+    },
+    "suggest": {
+        "winter/wn-user-plugin": "Member accounts: adds the wish list, my pens and gift list columns. Without it the catalogue renders read-only."
     }
 }

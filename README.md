@@ -9,6 +9,15 @@ Every descriptive facet (nationality, shape, colour, material, nib size/material
 is a **term** inside a **term group**. Backend users can add new groups and terms without any
 code change, which is what keeps the plugin useful beyond fountain pens.
 
+## Requirements
+
+- PHP 8.2+
+- Winter CMS 1.2+
+
+Member accounts are **optional**. The wish list, my pens and gift list columns appear only when
+the Winter.User plugin (`winter/wn-user-plugin`) is installed. Without it the catalogue renders
+read-only - no member columns, no errors.
+
 ## Licence
 
 GPL v3 (see LICENSE).
