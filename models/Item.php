@@ -103,10 +103,30 @@ class Item extends Model
         return trim($brand . ' ' . (string) $this->model);
     }
 
+    /**
+     * Backend creates are stamped and, for anyone who is not a superuser, held
+     * back as a draft. API creates set their own source and stay drafts too (see
+     * ApiController); a superuser keeps whatever the form gives them.
+     */
     public function beforeCreate()
     {
         if (!$this->type_id) {
             $this->type_id = ItemType::orderBy('sort_order')->value('id');
+        }
+
+        $user = \BackendAuth::getUser();
+
+        if (!$this->source) {
+            $this->source = 'backend';
+        }
+
+        if (!$this->created_by && $user) {
+            $this->created_by = $user->login;
+        }
+
+        if ($user && !$user->is_superuser) {
+            $this->is_published = 0;
+            $this->verified_at = null;
         }
     }
 

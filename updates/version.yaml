@@ -53,6 +53,9 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.20:
+    - "Backend-created pens now record who made them and, for anyone who is not a superuser, arrive unpublished. The publish action (single pen or bulk) is what puts them in front of the public, so an editor's work is reviewed before it is seen."
+
 1.0.19:
     - "Pen Catalog > Demand ranks the pens members keep asking for: requests, distinct members, last asked, and whether the catalogue already lists it. Declined suggestions are excluded, so the report is the working list for what to add next."
 

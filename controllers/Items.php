@@ -58,6 +58,19 @@ class Items extends Controller
      */
     public function formExtendFields($form)
     {
+        /*
+         * A non-superuser's new pen is saved unpublished, so the switch must not
+         * claim otherwise. Existing pens are untouched: editing one does not
+         * unpublish it.
+         */
+        $user = \BackendAuth::getUser();
+
+        if ($user && !$user->is_superuser && $form->model && !$form->model->exists && $form->getField('is_published')) {
+            $field = $form->getField('is_published');
+            $field->value = 0;
+            $field->comment = 'Your new pen stays hidden until someone publishes it.';
+        }
+
         $fields = [];
 
         foreach (TermGroup::orderBy('sort_order')->get() as $group) {
