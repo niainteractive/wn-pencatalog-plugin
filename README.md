@@ -18,6 +18,21 @@ Member accounts are **optional**. The wish list, my pens and gift list columns a
 the Winter.User plugin (`winter/wn-user-plugin`) is installed. Without it the catalogue renders
 read-only - no member columns, no errors.
 
+## Installation
+
+```bash
+composer require niainteractive/wn-pencatalog-plugin
+php artisan winter:up
+```
+
+Installing from a folder or zip? Put it at `plugins/niainteractive/pencatalog` and run
+`php artisan winter:up` to create the tables and seed the vocabularies.
+
+The plugin ships components and routes, **not pages** - pages belong to the theme.
+**See [docs/front-end-pages.md](docs/front-end-pages.md)** for every page the front end
+needs, with copy-paste stubs, the settings, the backend permissions and a verification
+checklist. If /pens 500s after install, that is almost always a missing page.
+
 ## Licence
 
 GPL v3 (see LICENSE).
