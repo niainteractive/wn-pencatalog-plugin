@@ -1,4 +1,11 @@
 scopes:
+    status:
+        label: Status
+        type: group
+        options:
+            0: Draft
+            1: Published
+        conditions: is_published in (:filtered)
     make:
         label: Make
         type: group

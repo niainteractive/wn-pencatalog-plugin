@@ -198,6 +198,16 @@ class Api
             $item = new Item();
             $item->make_id = $make->id;
             $item->model = $model;
+
+            /*
+             * The API writes drafts. A pen reaches the public catalogue only
+             * when someone reviews it and publishes it in the backend, so a
+             * systematic mistake cannot go live unnoticed. Pass
+             * is_published: true explicitly to override.
+             */
+            $item->is_published = 0;
+            $item->source = 'api';
+            $item->created_by = 'catalogue API';
         }
 
         $changes = [];
@@ -376,11 +386,14 @@ class Api
         $this->audit($request, $action, $item->slug);
 
         return $this->json([
-            'ok'      => true,
-            'action'  => $action,
-            'id'      => $item->id,
-            'slug'    => $item->slug,
-            'changes' => $changes,
+            'ok'           => true,
+            'action'       => $action,
+            'id'           => $item->id,
+            'slug'         => $item->slug,
+            'is_published' => (bool) $item->is_published,
+            'status'       => $item->is_published ? 'published' : 'draft',
+            'source'       => $item->source,
+            'changes'      => $changes,
         ], $action === 'created' ? 201 : 200);
     }
 
@@ -1103,6 +1116,9 @@ class Api
                 'videos'          => $item->videos,
                 'video_count'     => count($item->videoEmbeds()),
                 'is_published'    => (bool) $item->is_published,
+                'status'          => $item->is_published ? 'published' : 'draft',
+                'source'          => $item->source,
+                'verified_at'     => $item->verified_at ? $item->verified_at->toIso8601String() : null,
             ];
         }
 

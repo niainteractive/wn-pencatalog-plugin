@@ -13,6 +13,13 @@ columns:
         label: Published
         type: switch
         sortable: true
+    source:
+        label: Source
+        sortable: true
+    verified_at:
+        label: Verified
+        type: datetime
+        sortable: true
     rating:
         label: Rating
         type: number

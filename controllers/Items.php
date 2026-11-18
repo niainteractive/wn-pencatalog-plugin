@@ -2,6 +2,7 @@
 
 use Backend\Classes\Controller;
 use BackendMenu;
+use Niainteractive\PenCatalog\Models\Item;
 use Niainteractive\PenCatalog\Models\Term;
 use Niainteractive\PenCatalog\Models\TermGroup;
 
@@ -23,6 +24,28 @@ class Items extends Controller
     {
         parent::__construct();
         BackendMenu::setContext('Niainteractive.PenCatalog', 'pencatalog', 'items');
+    }
+
+    /**
+     * Publish the selected pens. API-created rows arrive as drafts; this is the
+     * gate that puts them in front of the public.
+     */
+    public function onPublish()
+    {
+        $checked = post('checked', []);
+
+        if (!is_array($checked) || !count($checked)) {
+            return;
+        }
+
+        $count = Item::whereIn('id', $checked)->update([
+            'is_published' => 1,
+            'verified_at'  => now(),
+        ]);
+
+        \Flash::success($count . ' pen(s) published.');
+
+        return $this->listRefresh();
     }
 
     /**

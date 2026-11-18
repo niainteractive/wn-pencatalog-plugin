@@ -25,6 +25,7 @@ class Item extends Model
     public $fillable = [
         'type_id', 'make_id', 'model', 'slug', 'rating', 'length_closed', 'length_uncapped',
         'length_posted', 'weight', 'description', 'notes', 'inspiration', 'videos', 'is_published',
+        'source', 'created_by', 'verified_at',
     ];
 
     public $rules = [

@@ -53,5 +53,9 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.16:
+    - "The catalogue API now writes drafts. New pens arrive unpublished, tagged with their source, and reach the public only when someone publishes them in the backend. Adds a Pending/Published filter, Source and Verified columns, and a Publish button on the list."
+    - add_draft_fields_to_items.php
+
 1.0.15:
     - "The catalogue no longer fatals on a site without the Winter.User plugin. Member lookups go through a helper that returns null when the Auth alias is unavailable, so Pens and Makes render on a clean install; sites with Winter.User keep the wish list and my-pens columns."
