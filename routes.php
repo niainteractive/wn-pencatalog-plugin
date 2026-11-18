@@ -45,7 +45,7 @@ Route::group([
 \Illuminate\Support\Facades\Route::middleware('web')->group(function () {
 
     \Illuminate\Support\Facades\Route::get('favorites/add', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         if ($itemId = (int) request('item_id')) {
@@ -59,7 +59,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::get('favorites/remove', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         if ($itemId = (int) request('item_id')) {
@@ -73,7 +73,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::post('favorites/update', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         $row = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
@@ -127,7 +127,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::get('favorites/bought', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         \Niainteractive\PenCatalog\Models\MemberPen::markBought($user->id, (int) request('row_id'));
         $back = (string) request('return');
@@ -136,7 +136,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::get('favorites/gifted', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         \Niainteractive\PenCatalog\Models\MemberPen::markGifted($user->id, (int) request('row_id'));
         $back = (string) request('return');
@@ -145,7 +145,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::get('member-photo/{row_id}', function ($rowId) {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) {
             abort(403);
         }
@@ -162,7 +162,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::post('ink-log/add', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $itemId = (int) request('item_id');
         $ownsIt = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
@@ -182,7 +182,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::get('ink-log/clean', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $row = \Niainteractive\PenCatalog\Models\InkLogEntry::forUser($user->id)->find((int) request('row_id'));
         if ($row) { $row->cleaned_on = date('Y-m-d'); $row->save(); }
@@ -190,7 +190,7 @@ Route::group([
     });
 
     \Illuminate\Support\Facades\Route::get('ink-log/remove', function () {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         \Niainteractive\PenCatalog\Models\InkLogEntry::forUser($user->id)->where('id', (int) request('row_id'))->delete();
         return \Illuminate\Support\Facades\Redirect::to('/ink-log');

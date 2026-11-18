@@ -89,7 +89,7 @@ class CatalogTable extends ComponentBase
         }
 
         try {
-            return (bool) \Auth::getUser();
+            return (bool) \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         } catch (\Throwable $e) {
             return false;
         }
@@ -243,15 +243,15 @@ class CatalogTable extends ComponentBase
         $this->page['returnUrl'] = request()->getRequestUri();
 
         /* Member lists: which pens the signed-in member already wants or owns */
-        $this->page['canUseLists'] = (bool) \Auth::getUser();
+        $this->page['canUseLists'] = (bool) \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         $this->page['memberLists'] = $this->page['canUseLists']
-            ? MemberPen::mapForUser(\Auth::getUser()->id)
+            ? MemberPen::mapForUser(\Niainteractive\PenCatalog\Classes\MemberAuth::user()->id)
             : [];
     }
 
     public function onAddToList()
     {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) {
             return;
         }

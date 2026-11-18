@@ -52,3 +52,6 @@
     - "A member row can carry its own photo. Uploads go to storage/app/media/mypens under the member id, and are served through /member-photo/{row}, which checks ownership before streaming"
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
+
+1.0.15:
+    - "The catalogue no longer fatals on a site without the Winter.User plugin. Member lookups go through a helper that returns null when the Auth alias is unavailable, so Pens and Makes render on a clean install; sites with Winter.User keep the wish list and my-pens columns."

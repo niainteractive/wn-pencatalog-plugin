@@ -16,7 +16,7 @@ class InkLog extends ComponentBase
 
     public function onRun()
     {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         $this->page['isGuest'] = !$user;
         $this->page['csrfToken'] = csrf_token();
         $this->page['preselect'] = (int) get('pen');

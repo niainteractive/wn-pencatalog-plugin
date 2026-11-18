@@ -30,7 +30,7 @@ class MemberList extends ComponentBase
 
     protected function userId()
     {
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         return $user ? $user->id : null;
     }
 

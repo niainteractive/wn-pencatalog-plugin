@@ -94,7 +94,7 @@ class ItemDetail extends ComponentBase
         $this->page['photo'] = $this->photos->where('is_primary', 1)->first() ?: $this->photos->first();
 
         /* Member list state for this pen */
-        $user = \Auth::getUser();
+        $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         $this->page['canUseLists'] = (bool) $user;
         $this->page['returnUrl'] = request()->getRequestUri();
         $this->page['inWish'] = false;
@@ -111,7 +111,7 @@ class ItemDetail extends ComponentBase
     protected function signedIn()
     {
         try {
-            return (bool) \Auth::guard('web')->check();
+            return (bool) \Niainteractive\PenCatalog\Classes\MemberAuth::check();
         } catch (\Throwable $e) {
             return false;
         }
