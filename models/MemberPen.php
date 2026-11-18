@@ -24,6 +24,7 @@ class MemberPen extends Model
     const EDITABLE = [
         'quantity', 'price_paid', 'acquired_on', 'condition',
         'nib_grind', 'variant_color', 'serial_no', 'notes', 'status', 'recipient',
+        'pen_make', 'pen_model',
     ];
 
     public $belongsTo = [
@@ -40,18 +41,56 @@ class MemberPen extends Model
         return $query->where('list', $list);
     }
 
-    public static function addForUser($userId, $itemId, $list)
+    public static function addForUser($userId, $itemId, $list, $make = null, $model = null)
     {
-        $row = self::where('user_id', $userId)->where('item_id', $itemId)->where('list', $list)->first();
+        $make = $make !== null ? trim((string) $make) : null;
+        $model = $model !== null ? trim((string) $model) : null;
+
+        if ($itemId) {
+            $row = self::where('user_id', $userId)->where('item_id', $itemId)->where('list', $list)->first();
+            if ($row) {
+                return $row;
+            }
+
+            $row = new self();
+            $row->user_id = $userId;
+            $row->item_id = $itemId;
+            $row->list = $list;
+            $row->status = $list === 'owned' ? 'owned' : ($list === 'gift' ? 'gifted' : 'wanted');
+            $row->save();
+
+            return $row;
+        }
+
+        /*
+         * A pen the catalogue does not list. It belongs to the member only, so
+         * no moderation is involved - the row lives on their shelf, sorted and
+         * edited like any other, and can be linked to a catalogue entry later.
+         */
+        if ($model === null || $model === '') {
+            return null;
+        }
+
+        $row = self::where('user_id', $userId)
+            ->where('list', $list)
+            ->whereNull('item_id')
+            ->where('pen_make', $make)
+            ->where('pen_model', $model)
+            ->first();
+
         if ($row) {
             return $row;
         }
+
         $row = new self();
         $row->user_id = $userId;
-        $row->item_id = $itemId;
+        $row->item_id = null;
+        $row->pen_make = $make !== '' ? $make : null;
+        $row->pen_model = $model;
         $row->list = $list;
         $row->status = $list === 'owned' ? 'owned' : ($list === 'gift' ? 'gifted' : 'wanted');
         $row->save();
+
         return $row;
     }
 

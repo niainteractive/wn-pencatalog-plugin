@@ -19,6 +19,15 @@
                 <button type="submit" class="btn btn-primary btn-block">Add</button>
             </div>
         </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-sm-4">
+                <input name="pen_make" class="form-control" placeholder="Make, if not listed">
+            </div>
+            <div class="col-sm-8">
+                <input name="pen_model" class="form-control" placeholder="Model of a pen the catalogue does not list yet">
+            </div>
+        </div>
     </form>
 
     {% if rows|length == 0 %}
@@ -36,7 +45,8 @@
                             {% if row.item %}
                                 <a href="/pen/{{ row.item.slug }}">{{ row.item.brand.name ?? '' }} {{ row.item.model }}</a>
                             {% else %}
-                                {{ row.notes ?? 'Pen' }}
+                                {% set listed = ((row.pen_make ?? '') ~ ' ' ~ (row.pen_model ?? ''))|trim %}
+                                {{ listed ?: (row.notes ?: 'Pen') }}
                             {% endif %}
                         </strong>
                         <div style="color:#555; font-size:12.5px; margin-top:5px;">
@@ -115,6 +125,16 @@
                     {% if listKey == 'gift' %}
                         <input name="recipient" class="form-control input-sm" style="margin-bottom:8px;"
                                placeholder="Recipient - who is this pen for?" value="{{ row.recipient }}">
+                    {% endif %}
+                    {% if not row.item_id %}
+                    <div class="row" style="margin-bottom:8px;">
+                        <div class="col-sm-5">
+                            <input name="pen_make" class="form-control input-sm" placeholder="Make" value="{{ row.pen_make }}">
+                        </div>
+                        <div class="col-sm-7">
+                            <input name="pen_model" class="form-control input-sm" placeholder="Model" value="{{ row.pen_model }}">
+                        </div>
+                    </div>
                     {% endif %}
                     <input name="notes" class="form-control input-sm" placeholder="Notes (private)" value="{{ row.notes }}">
                 </form>

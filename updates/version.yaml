@@ -53,6 +53,10 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.17:
+    - "Members can add a pen the catalogue does not list to their own shelf, wish list or gift list. The row is private to them, editable like any other, and needs no moderation; catalogue rows behave exactly as before."
+    - add_private_pens_to_member_pens.php
+
 1.0.16:
     - "The catalogue API now writes drafts. New pens arrive unpublished, tagged with their source, and reach the public only when someone publishes them in the backend. Adds a Pending/Published filter, Source and Verified columns, and a Publish button on the list."
     - add_draft_fields_to_items.php

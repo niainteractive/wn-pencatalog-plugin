@@ -56,7 +56,7 @@ class MemberList extends ComponentBase
             // catalogue entry sort last, under their own note.
             ->sortBy(function ($row) {
                 if (!$row->item) {
-                    return '~' . mb_strtolower((string) $row->notes);
+                    return mb_strtolower(trim((string) $row->pen_make . ' ' . (string) $row->pen_model));
                 }
 
                 $brand = $row->item->brand ? $row->item->brand->name : '';
@@ -77,6 +77,8 @@ class MemberList extends ComponentBase
                 'record'      => $row,
                 'id'          => $row->id,
                 'item_id'     => $row->item_id,
+                'pen_make'    => $row->pen_make,
+                'pen_model'   => $row->pen_model,
                 'item'        => $row->item,
                 'quantity'    => $row->quantity,
                 'price_paid'  => $row->price_paid,

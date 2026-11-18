@@ -48,8 +48,20 @@ Route::group([
         $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
-        if ($itemId = (int) request('item_id')) {
+        $itemId = (int) request('item_id');
+
+        if ($itemId) {
             \Niainteractive\PenCatalog\Models\MemberPen::addForUser($user->id, $itemId, $list);
+        }
+        else {
+            // A pen the catalogue does not list: make is optional, model is not.
+            \Niainteractive\PenCatalog\Models\MemberPen::addForUser(
+                $user->id,
+                null,
+                $list,
+                request('pen_make'),
+                request('pen_model')
+            );
         }
         $back = (string) request('return');
         if ($back === '' || $back[0] !== '/' || substr($back, 0, 2) === '//') {
