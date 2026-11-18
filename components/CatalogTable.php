@@ -68,6 +68,12 @@ class CatalogTable extends ComponentBase
                 'title'   => 'Base URL for links (leave blank for /pens)',
                 'default' => '/pens',
             ],
+            'sidebar' => [
+                'title'       => 'Filters in a sidebar',
+                'description' => 'Leave the filters out of the table block; the theme sidebar renders them.',
+                'type'        => 'checkbox',
+                'default'     => false,
+            ],
         ];
     }
 
@@ -98,6 +104,7 @@ class CatalogTable extends ComponentBase
     protected function loadData()
     {
         $base = rtrim((string) $this->property('baseUrl', '/pens'), '/');
+        $this->page['filterBaseUrl'] = $base;
         $base = $base === '' ? '/pens' : $base;
 
         $sortable = ['model', 'brand', 'rating', 'inspiration', 'weight'];
@@ -237,6 +244,7 @@ class CatalogTable extends ComponentBase
         $this->page['columns'] = $this->columns;
         $this->page['sortLinks'] = $this->sortLinks;
         $this->page['filterLinks'] = $this->filterLinks;
+        $this->page['ratingOptions'] = $this->ratingOptions;
         $this->page['items'] = $this->items;
         $this->page['groupLabels'] = $groups->pluck('name', 'slug')->all();
         $this->page['make'] = $this->make;
@@ -265,6 +273,14 @@ class CatalogTable extends ComponentBase
     /** AJAX filter/sort refresh (progressive enhancement) */
     public function onFilter()
     {
+        /*
+         * The sidebar form posts over AJAX while the listing reads the query
+         * string, so lift the posted values into the query bag first.
+         */
+        foreach ((array) post() as $key => $value) {
+            request()->query->set($key, $value);
+        }
+
         $this->loadData();
 
         return [

@@ -1,4 +1,4 @@
-<form method="get" action="/pens" style="margin:0 0 14px 0">
+<form method="get" action="{{ filterBaseUrl }}" style="margin:0 0 14px 0">
     <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end">
         <label>Search<br>
             <input type="text" name="q" value="{{ get.q }}" placeholder="make, model, inspiration"
@@ -27,7 +27,7 @@
         {% if get.dir %}<input type="hidden" name="dir" value="{{ get.dir }}">{% endif %}
 
         <button type="submit" style="padding:5px 12px">Filter</button>
-        <a href="{{ 'pens'|page }}" style="padding:5px 12px">Reset</a>
+        <a href="{{ filterBaseUrl }}" style="padding:5px 12px">Reset</a>
     </div>
 
     {% for groupSlug, terms in filterLinks %}

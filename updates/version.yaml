@@ -53,6 +53,15 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.25:
+    - "The rating filter's options are handed to the page again, so the dropdown is no longer empty (it had been since the filter moved into its own partial)."
+
+1.0.24:
+    - "Live sidebar filtering: the AJAX filter handler now reads the posted values, so the table updates without a page load."
+
+1.0.23:
+    - "The table component can leave its filters to a theme sidebar (sidebar property), and its filter form now honours baseUrl, so the same catalogue can live at more than one URL."
+
 1.0.22:
     - "The pen detail component no longer prints a second h1 now that the page heading carries the pen's name; the record heading is an h2."
 
