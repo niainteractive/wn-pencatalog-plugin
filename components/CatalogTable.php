@@ -199,10 +199,8 @@ class CatalogTable extends ComponentBase
             ['key' => 'model',       'label' => 'Model',       'kind' => 'model', 'sort' => 'model'],
             ['key' => 'rating',      'label' => 'Rating',      'kind' => 'field', 'sort' => 'rating', 'suffix' => ' / 10'],
             ['key' => 'inspiration', 'label' => 'Inspiration', 'kind' => 'field', 'sort' => 'inspiration'],
-            ['key' => 'nationality', 'label' => 'Nationality', 'kind' => 'terms', 'group' => 'nationality'],
             ['key' => 'nib-type',    'label' => 'Nib Type',    'kind' => 'terms', 'group' => 'nib-type'],
             ['key' => 'ink-system',  'label' => 'Ink',         'kind' => 'terms', 'group' => 'ink-system'],
-            ['key' => 'weight',      'label' => 'Weight',      'kind' => 'field', 'sort' => 'weight', 'suffix' => ' g'],
             ['key' => 'member',      'label' => 'My lists',    'kind' => 'member'],
         ];
 

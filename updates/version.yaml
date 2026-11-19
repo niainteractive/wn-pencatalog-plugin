@@ -53,6 +53,9 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.27:
+    - "The catalogue table drops the Nationality and Weight columns, in the standard view, the sidebar view and any make-filtered list. Both fields remain on the pen record and in the detail page."
+
 1.0.26:
     - "A catalogue stats component publishes live counts (pens, makes, vendors, pens on members' shelves) so the home page can show numbers that are true."
 
