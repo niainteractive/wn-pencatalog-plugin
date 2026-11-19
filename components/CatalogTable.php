@@ -286,6 +286,18 @@ class CatalogTable extends ComponentBase
         ];
     }
 
+    /**
+     * Page link that keeps the current filters and sorting.
+     */
+    public function pageUrl($page)
+    {
+        $params = (array) get();
+        unset($params['page']);
+        $params['page'] = (int) $page;
+
+        return rtrim((string) $this->property('baseUrl', '/pens'), '/') . $this->queryString($params);
+    }
+
     protected function queryString($params)
     {
         $clean = [];

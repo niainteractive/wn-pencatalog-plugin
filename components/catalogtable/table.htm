@@ -58,4 +58,29 @@
 </table>
 </div>
 
-<div style="margin-top:14px">{{ items.render|raw }}</div>
+{% if items.lastPage > 1 %}
+<ul class="pagination-wrap mt-50 justify-content-center">
+    {% if items.currentPage > 1 %}
+    <li>
+        <a href="{{ __SELF__.pageUrl(items.currentPage - 1) }}" aria-label="Previous page">
+            <i class="fa-regular fa-arrow-left"></i>
+        </a>
+    </li>
+    {% endif %}
+
+    {% for page in 1..items.lastPage %}
+    <li>
+        <a href="{{ __SELF__.pageUrl(page) }}"
+           {% if items.currentPage == page %}class="active" aria-current="page"{% endif %}>{{ page }}</a>
+    </li>
+    {% endfor %}
+
+    {% if items.currentPage < items.lastPage %}
+    <li>
+        <a href="{{ __SELF__.pageUrl(items.currentPage + 1) }}" aria-label="Next page">
+            <i class="fa-regular fa-arrow-right"></i>
+        </a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}
