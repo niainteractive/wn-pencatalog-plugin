@@ -53,6 +53,9 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.29:
+    - "The pen table drops the Inspiration column, and the ink-system column is labelled Filler - 'Ink' read as the ink inside the pen rather than how it fills."
+
 1.0.28:
     - "The catalogue's pagination uses the theme's own pagination markup (round page links, arrow ends) instead of the framework's default list, and keeps the active filters and sort in every page link."
 
