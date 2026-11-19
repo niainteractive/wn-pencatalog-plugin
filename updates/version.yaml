@@ -53,6 +53,9 @@
     - "Remove the current photo with a checkbox on the row; replacing one deletes the old file"
     - add_variant_fields_to_member_pens.php
 
+1.0.31:
+    - "The table publishes the active search, make and rating values, so a sidebar rendered by the theme can show what is currently filtering the list. The header search now lands on /pens?q=."
+
 1.0.30:
     - "The sidebar option is read through the component rather than an undefined template variable, so a sidebar page no longer prints a second copy of the filters above the table."
 

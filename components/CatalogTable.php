@@ -242,6 +242,9 @@ class CatalogTable extends ComponentBase
         $this->page['sortLinks'] = $this->sortLinks;
         $this->page['filterLinks'] = $this->filterLinks;
         $this->page['ratingOptions'] = $this->ratingOptions;
+        $this->page['searchQuery'] = trim((string) get('q'));
+        $this->page['makeQuery'] = (string) get('make');
+        $this->page['ratingQuery'] = (string) get('rating');
         $this->page['items'] = $this->items;
         $this->page['groupLabels'] = $groups->pluck('name', 'slug')->all();
         $this->page['make'] = $this->make;
