@@ -50,8 +50,12 @@ Route::group([
         $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
         $itemId = (int) request('item_id');
 
+        /* copy=1 is the explicit "add another copy" action. Without it the add
+         * stays idempotent, so a refreshed link cannot quietly duplicate a pen. */
+        $copy = (bool) request('copy');
+
         if ($itemId) {
-            \Niainteractive\PenCatalog\Models\MemberPen::addForUser($user->id, $itemId, $list);
+            \Niainteractive\PenCatalog\Models\MemberPen::addForUser($user->id, $itemId, $list, null, null, $copy);
         }
         else {
             // A pen the catalogue does not list: make is optional, model is not.
@@ -60,7 +64,8 @@ Route::group([
                 null,
                 $list,
                 request('pen_make'),
-                request('pen_model')
+                request('pen_model'),
+                $copy
             );
         }
         $back = (string) request('return');
@@ -74,7 +79,12 @@ Route::group([
         $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
         $list = in_array(request('list'), ['owned', 'wish', 'gift'], true) ? request('list') : 'wish';
-        if ($itemId = (int) request('item_id')) {
+
+        /* A row id removes one physical pen. The item form remains for links
+         * that mean "I do not own this pen at all" (the pen-page toggle). */
+        if ($rowId = (int) request('row_id')) {
+            \Niainteractive\PenCatalog\Models\MemberPen::removeRow($user->id, $rowId, $list);
+        } elseif ($itemId = (int) request('item_id')) {
             \Niainteractive\PenCatalog\Models\MemberPen::removeForUser($user->id, $itemId, $list);
         }
         $back = (string) request('return');
@@ -176,13 +186,24 @@ Route::group([
     \Illuminate\Support\Facades\Route::post('ink-log/add', function () {
         $user = \Niainteractive\PenCatalog\Classes\MemberAuth::user();
         if (!$user) { return \Illuminate\Support\Facades\Redirect::to('/login'); }
-        $itemId = (int) request('item_id');
-        $ownsIt = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
-            ->inList('owned')->where('item_id', $itemId)->exists();
-        if ($ownsIt) {
+        /* The form posts the physical pen (member_pen_id). The older item_id
+         * field still resolves, to the first copy the member owns. */
+        $memberPenId = (int) request('member_pen_id');
+        $row = $memberPenId
+            ? \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
+                ->inList('owned')->find($memberPenId)
+            : null;
+
+        if (!$row && ($itemId = (int) request('item_id'))) {
+            $row = \Niainteractive\PenCatalog\Models\MemberPen::forUser($user->id)
+                ->inList('owned')->where('item_id', $itemId)->first();
+        }
+
+        if ($row) {
             $e = new \Niainteractive\PenCatalog\Models\InkLogEntry();
             $e->user_id = $user->id;
-            $e->item_id = $itemId;
+            $e->item_id = $row->item_id;
+            $e->member_pen_id = $row->id;
             $e->ink_brand = request('ink_brand');
             $e->ink_name = request('ink_name');
             $e->ink_color = request('ink_color');

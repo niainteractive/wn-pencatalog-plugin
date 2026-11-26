@@ -8,26 +8,57 @@
 
     {% if canUseLists %}
         <p style="margin:-6px 0 16px; font-size:15px;">
-            {% if inWish %}
+            {# Counts, not flags. A filled icon removes every copy, so it acts as a
+               link only when there is one; with more it reports the number and the
+               list page manages the copies one at a time. Any list with a copy on
+               it offers "add another". #}
+            {% if wishCount > 1 %}
+                <span title="{{ wishCount }} copies on your wish list" style="text-decoration:none;color:#8a5a00;font-size:20px;">&#9733;</span>
+            {% elseif inWish %}
                 <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="On your wish list - click to remove" style="text-decoration:none;color:#8a5a00;font-size:20px;">&#9733;</a>
             {% else %}
                 <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="Add to wish list" style="text-decoration:none;font-size:20px;">&#9734;</a>
             {% endif %}
-            <span style="color:#777; margin-right:22px;">Wish List</span>
+            {% if wishCount > 1 %}
+                <a href="/wishlist" title="Manage the copies on your wish list" style="color:#777; margin-right:22px;">Wish List ({{ wishCount }})</a>
+            {% else %}
+                <span style="color:#777; margin-right:22px;">Wish List</span>
+            {% endif %}
+            {% if wishCount %}
+                <a href="/favorites/add?item_id={{ item.id }}&list=wish&copy=1&return={{ returnUrl|url_encode }}" title="Add another copy to the wish list" style="font-size:12px;color:#999;margin-right:18px;">+ another</a>
+            {% endif %}
 
-            {% if isOwned %}
+            {% if ownedCount > 1 %}
+                <span title="{{ ownedCount }} copies on your shelf" style="text-decoration:none;color:#2c5f45;font-size:20px;">&#10003;</span>
+            {% elseif isOwned %}
                 <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="You own this - click to remove" style="text-decoration:none;color:#2c5f45;font-size:20px;">&#10003;</a>
             {% else %}
                 <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="Add to my pens" style="text-decoration:none;font-size:20px;">&#43;</a>
             {% endif %}
-            <span style="color:#777;">I own this</span>
-
-            {% if inGift %}
-                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=gift&return={{ returnUrl|url_encode }}" title="On your gift list - click to remove" style="text-decoration:none;color:#7a3e9d;font-size:20px;">&#9679;</a>
+            {% if ownedCount > 1 %}
+                <a href="/mypens" title="Manage the copies on My Pens" style="color:#777;">I own this ({{ ownedCount }})</a>
             {% else %}
-                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=gift&return={{ returnUrl|url_encode }}" title="Add to gift list" style="text-decoration:none;font-size:20px;">&#9675;</a>
+                <span style="color:#777;">I own this</span>
             {% endif %}
-            <span style="color:#777;">Gift list</span>
+            {% if ownedCount %}
+                <a href="/favorites/add?item_id={{ item.id }}&list=owned&copy=1&return={{ returnUrl|url_encode }}" title="Add another copy to My Pens" style="font-size:12px;color:#999;margin-left:6px;">+ another</a>
+            {% endif %}
+
+            {% if giftCount > 1 %}
+                <span title="{{ giftCount }} copies on your gift list" style="text-decoration:none;color:#7a3e9d;font-size:20px;margin-left:22px;">&#9679;</span>
+            {% elseif inGift %}
+                <a data-toggle-list href="/favorites/remove?item_id={{ item.id }}&list=gift&return={{ returnUrl|url_encode }}" title="On your gift list - click to remove" style="text-decoration:none;color:#7a3e9d;font-size:20px;margin-left:22px;">&#9679;</a>
+            {% else %}
+                <a data-toggle-list href="/favorites/add?item_id={{ item.id }}&list=gift&return={{ returnUrl|url_encode }}" title="Add to gift list" style="text-decoration:none;font-size:20px;margin-left:22px;">&#9675;</a>
+            {% endif %}
+            {% if giftCount > 1 %}
+                <a href="/gifts" title="Manage the copies on your gift list" style="color:#777;">Gift list ({{ giftCount }})</a>
+            {% else %}
+                <span style="color:#777;">Gift list</span>
+            {% endif %}
+            {% if giftCount %}
+                <a href="/favorites/add?item_id={{ item.id }}&list=gift&copy=1&return={{ returnUrl|url_encode }}" title="Add another copy to the gift list" style="font-size:12px;color:#999;margin-left:6px;">+ another</a>
+            {% endif %}
         </p>
     {% endif %}
 

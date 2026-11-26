@@ -14,9 +14,9 @@
             <div class="row">
                 <div class="col-sm-4 form-group">
                     <label>Pen</label>
-                    <select name="item_id" class="form-control">
+                    <select name="member_pen_id" class="form-control">
                         {% for pen in pens %}
-                            <option value="{{ pen.id }}" {% if preselect == pen.id %}selected{% endif %}>{{ pen.label }}</option>
+                            <option value="{{ pen.id }}" {% if preselectRow == pen.id %}selected{% endif %}>{{ pen.label }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -56,6 +56,9 @@
                     <td>
                         {% if entry.item %}
                             <a href="/pen/{{ entry.item.slug }}">{{ entry.item.brand.name ?? '' }} {{ entry.item.model }}</a>
+                            {% if entry.memberPen and entry.memberPen.variant_color %}
+                                <span style="color:#7a3e9d;"> &middot; {{ entry.memberPen.variant_color }}</span>
+                            {% endif %}
                         {% else %}&mdash;{% endif %}
                     </td>
                     <td>{{ entry.ink_brand ? entry.ink_brand ~ ' ' : '' }}{{ entry.ink_name }}</td>
@@ -78,7 +81,7 @@
             <tbody>
             {% for entry in history %}
                 <tr>
-                    <td>{{ entry.item ? ((entry.item.brand.name ?? '') ~ ' ' ~ entry.item.model) : '—' }}</td>
+                    <td>{{ entry.item ? ((entry.item.brand.name ?? '') ~ ' ' ~ entry.item.model) : '—' }}{% if entry.memberPen and entry.memberPen.variant_color %}<span style="color:#7a3e9d;"> &middot; {{ entry.memberPen.variant_color }}</span>{% endif %}</td>
                     <td>{{ entry.ink_brand ? entry.ink_brand ~ ' ' : '' }}{{ entry.ink_name }}</td>
                     <td>{{ entry.filled_on }}</td>
                     <td>{{ entry.cleaned_on }}</td>

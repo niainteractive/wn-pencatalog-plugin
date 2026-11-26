@@ -52,7 +52,9 @@ class MemberList extends ComponentBase
             ->with(['item.brand', 'item.type', 'item.terms.group'])
             ->get()
             // Alphabetical by the label the page shows: brand then model,
-            // case-insensitive and natural (M2 before M10). Rows with no
+            // case-insensitive and natural (M2 before M10). Copies of one pen
+            // sit together, ordered by colour then row id, so a shelf with two
+            // X450s does not shuffle between page loads. Rows with no
             // catalogue entry sort last, under their own note.
             ->sortBy(function ($row) {
                 if (!$row->item) {
@@ -61,11 +63,28 @@ class MemberList extends ComponentBase
 
                 $brand = $row->item->brand ? $row->item->brand->name : '';
 
-                return mb_strtolower(trim($brand . ' ' . $row->item->model));
+                return mb_strtolower(trim($brand . ' ' . $row->item->model . ' '
+                    . (string) $row->variant_color . ' ' . $row->id));
             }, SORT_NATURAL | SORT_FLAG_CASE)
             ->values();
 
+        /* How many copies of each pen sit in this list, so a row can say
+         * "copy 2 of 2" when the model name alone would be ambiguous. */
+        $copyTotals = [];
+        foreach ($records as $record) {
+            $key = $record->item_id
+                ? 'i'.$record->item_id
+                : 'p'.mb_strtolower(trim((string) $record->pen_make . ' ' . (string) $record->pen_model));
+            $copyTotals[$key] = ($copyTotals[$key] ?? 0) + 1;
+        }
+        $copySeen = [];
+
         foreach ($records as $row) {
+            $key = $row->item_id
+                ? 'i'.$row->item_id
+                : 'p'.mb_strtolower(trim((string) $row->pen_make . ' ' . (string) $row->pen_model));
+            $copySeen[$key] = ($copySeen[$key] ?? 0) + 1;
+
             $byGroup = [];
             if ($row->item) {
                 foreach ($row->item->terms as $term) {
@@ -80,7 +99,8 @@ class MemberList extends ComponentBase
                 'pen_make'    => $row->pen_make,
                 'pen_model'   => $row->pen_model,
                 'item'        => $row->item,
-                'quantity'    => $row->quantity,
+                'copy_no'     => $copySeen[$key],
+                'copy_total'  => $copyTotals[$key],
                 'price_paid'  => $row->price_paid,
                 'acquired_on' => $row->acquired_on ? \Illuminate\Support\Carbon::parse($row->acquired_on)->format('Y-m-d') : '',
                 'nib_grind'   => $row->nib_grind,
@@ -112,10 +132,18 @@ class MemberList extends ComponentBase
         if (!$userId = $this->userId()) {
             return ['#memberList' => '<p>Please sign in.</p>'];
         }
+
+        /* copy=1 is the deliberate "add another copy" action. Without it an add
+         * stays idempotent, so a repeated click cannot invent a second pen. */
+        $copy = (bool) post('copy');
         $itemId = (int) post('item_id');
+
         if ($itemId) {
-            MemberPen::addForUser($userId, $itemId, $this->list());
+            MemberPen::addForUser($userId, $itemId, $this->list(), null, null, $copy);
+        } elseif ($model = trim((string) post('pen_model'))) {
+            MemberPen::addForUser($userId, null, $this->list(), post('pen_make'), $model, $copy);
         }
+
         return $this->refresh();
     }
 
@@ -124,7 +152,16 @@ class MemberList extends ComponentBase
         if (!$userId = $this->userId()) {
             return [];
         }
-        MemberPen::removeForUser($userId, (int) post('item_id'), $this->list());
+
+        /* A row id removes one physical pen. The old item_id form is kept for
+         * links that mean "I do not own this pen at all", but the list itself
+         * never renders it. */
+        if ($rowId = (int) post('row_id')) {
+            MemberPen::removeRow($userId, $rowId, $this->list());
+        } else {
+            MemberPen::removeForUser($userId, (int) post('item_id'), $this->list());
+        }
+
         return $this->refresh();
     }
 

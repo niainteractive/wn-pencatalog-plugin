@@ -106,3 +106,8 @@
 
 1.0.15:
     - "The catalogue no longer fatals on a site without the Winter.User plugin. Member lookups go through a helper that returns null when the Auth alias is unavailable, so Pens and Makes render on a clean install; sites with Winter.User keep the wish list and my-pens columns."
+
+1.0.32:
+    - "Member lists now record one row per physical pen. The unique key that allowed only one of each pen per list is gone, so two X450s in different colours can both sit on My Pens or the Gift List, each with its own colour, price, photo and recipient. quantity is retired: counting a shelf is counting rows."
+    - "The ink log attaches a fill to the specific pen rather than the model, so two copies in different colours stay distinct, and existing entries are pointed at the member's owned row for that pen."
+    - member_copies_and_ink_pen.php

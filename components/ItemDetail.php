@@ -110,11 +110,24 @@ class ItemDetail extends ComponentBase
         $this->page['inWish'] = false;
         $this->page['isOwned'] = false;
         $this->page['inGift'] = false;
+        $this->page['wishCount'] = 0;
+        $this->page['ownedCount'] = 0;
+        $this->page['giftCount'] = 0;
         if ($user) {
             $map = \Niainteractive\PenCatalog\Models\MemberPen::mapForUser($user->id);
-            $this->page['inWish'] = !empty($map[$this->item->id]['wish']);
-            $this->page['isOwned'] = !empty($map[$this->item->id]['owned']);
-            $this->page['inGift'] = !empty($map[$this->item->id]['gift']);
+            $wishCount = (int) ($map[$this->item->id]['wish'] ?? 0);
+            $ownedCount = (int) ($map[$this->item->id]['owned'] ?? 0);
+            $giftCount = (int) ($map[$this->item->id]['gift'] ?? 0);
+
+            /* The count matters: the toggle removes every copy, so it is only
+             * offered when there is one. With more, the page links to the list
+             * where copies are managed one at a time. */
+            $this->page['wishCount'] = $wishCount;
+            $this->page['ownedCount'] = $ownedCount;
+            $this->page['giftCount'] = $giftCount;
+            $this->page['inWish'] = $wishCount > 0;
+            $this->page['isOwned'] = $ownedCount > 0;
+            $this->page['inGift'] = $giftCount > 0;
         }
     }
 

@@ -26,14 +26,21 @@
                             <a href="/pen/{{ row.item.slug }}">{{ row.item.model }}</a>
                         {% elseif column.kind == 'member' %}
                             {% if canUseLists %}
-                                {% set inWish = memberLists[row.item.id].wish ?? false %}
-                                {% set isOwned = memberLists[row.item.id].owned ?? false %}
-                                {% if inWish %}
+                                {# These are counts now: 2 means two physical pens. The
+                                   filled icon removes every copy, so it only links when
+                                   there is one; otherwise show the number. #}
+                                {% set inWish = memberLists[row.item.id].wish ?? 0 %}
+                                {% set isOwned = memberLists[row.item.id].owned ?? 0 %}
+                                {% if inWish > 1 %}
+                                    <span title="{{ inWish }} on your wish list" style="text-decoration:none;color:#8a5a00;">&#9733;<span style="font-size:10px;">&times;{{ inWish }}</span></span>
+                                {% elseif inWish %}
                                     <a data-toggle-list href="/favorites/remove?item_id={{ row.item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="On your favorites — click to remove" style="text-decoration:none;color:#8a5a00;">&#9733;</a>
                                 {% else %}
                                     <a data-toggle-list href="/favorites/add?item_id={{ row.item.id }}&list=wish&return={{ returnUrl|url_encode }}" title="Add to favorites" style="text-decoration:none;">&#9734;</a>
                                 {% endif %}
-                                {% if isOwned %}
+                                {% if isOwned > 1 %}
+                                    <span title="{{ isOwned }} on your shelf" style="text-decoration:none;color:#2c5f45;">&#10003;<span style="font-size:10px;">&times;{{ isOwned }}</span></span>
+                                {% elseif isOwned %}
                                     <a data-toggle-list href="/favorites/remove?item_id={{ row.item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="You own this — click to remove" style="text-decoration:none;color:#2c5f45;">&#10003;</a>
                                 {% else %}
                                     <a data-toggle-list href="/favorites/add?item_id={{ row.item.id }}&list=owned&return={{ returnUrl|url_encode }}" title="Add to my pens" style="text-decoration:none;">&#43;</a>
